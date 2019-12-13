@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import br.com.codersistemas.libs.annotations.Label;
@@ -275,11 +274,11 @@ public class ReflectionUtils {
 			}
 			
 			if(valor1 != null && valor1 instanceof Date) {
-				valor1 = CoderTools.dateTimeToString((Date) valor1);
+				valor1 = DateUtils.dateTimeToString((Date) valor1);
 			}
 			
 			if(valor2 != null && valor2 instanceof Date) {
-				valor2 = CoderTools.dateTimeToString((Date) valor2);
+				valor2 = DateUtils.dateTimeToString((Date) valor2);
 			}
 			
 			String label = field.getName();
