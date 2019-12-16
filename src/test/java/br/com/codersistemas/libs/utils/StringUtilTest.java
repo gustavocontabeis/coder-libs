@@ -29,18 +29,22 @@ public class StringUtilTest {
 
 	@Test
 	public void testToCamelCase() {
-		fail("implementar...");
-//		CaseUtils.toCamelCase(null, false) 
-//		assertTrue("gustavo".equals(StringUtil.uncapitalize("Gustavo")));
-//		assertTrue("gustavo da Silva".equals(StringUtil.uncapitalize("Gustavo da Silva")));
+		assertTrue("gustavoDaSilva".equals(StringUtil.toCamelCase("gustavo da silva")));
+		assertTrue("gustavoDaSilva".equals(StringUtil.toCamelCase("gustavo_da_silva")));
 	}
 
 	@Test
 	public void testToUnderlineCase() {
-		fail("implementar...");
-//		CaseUtils.toCamelCase(null, false) 
-//		assertTrue("gustavo".equals(StringUtil.uncapitalize("Gustavo")));
-//		assertTrue("gustavo da Silva".equals(StringUtil.uncapitalize("Gustavo da Silva")));
+		assertTrue("gustavo_da_silva".equals(StringUtil.toUnderlineCase("gustavoDaSilva")));
+		assertTrue("Gustavo_da_silva".equals(StringUtil.toUnderlineCase("GustavoDaSilva")));
+	}
+
+	@Test
+	public void testLabel() {
+		assertTrue("Nome".equals(StringUtil.label("nome")));
+		assertTrue("Gustavo da Silva".equals(StringUtil.label("gustavo_da_silva")));
+		assertTrue("Gustavo da Silva".equals(StringUtil.label("gustavoDaDilva")));
+		assertTrue("Gustavo da Silva".equals(StringUtil.label("GustavoDaDilva")));
 	}
 
 }
