@@ -5,7 +5,7 @@
 
 	<groupId>br.com.codersistemas</groupId>
 	<artifactId>coder-libs</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>coder-libs</name>
@@ -56,4 +56,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	<description>Lib utilitária para diversos projetos</description>
 </project>
