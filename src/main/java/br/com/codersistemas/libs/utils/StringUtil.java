@@ -29,7 +29,16 @@ public class StringUtil extends StringUtils {
 	}
 	
 	public static String label(String valor)  {
-		return "";
+		String underlineCase = StringUtil.toUnderlineCase(valor);
+		String replace = underlineCase.replace("_", " ");
+		String capitalize = capitalize(replace);
+		String normalizePT = capitalize
+				.replace(" Da ", " da ")
+				.replace(" De ", " de ")
+				.replace(" Do ", " do ")
+				.replace("cao", "ção")
+				.replace("coes", "ções");
+		return normalizePT;
 	}
 
 	public static String toCamelCase(String string) {
@@ -41,19 +50,6 @@ public class StringUtil extends StringUtils {
 	}
 
 	public static String toUnderlineCase(String string) {
-		Matcher matcher = Pattern.compile("[A-Z]").matcher(string);
-		while(matcher.find()) {
-			System.out.println(matcher.group());
-		}
-		
-		
-//		String[] split = string.split("[A-Z]");
-//		String str2 = "";
-//		for (String string2 : split) {
-//			System.out.println(string2);
-//			str2 += "_"+string2; 
-//		}
-		//return StringUtil.removeFirst(str2, "_");
-		return "";
+		return string.replaceAll("([a-z])([A-Z]+)", "$1_$2");
 	}
 }

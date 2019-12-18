@@ -3,6 +3,11 @@
  */
 package br.com.codersistemas.libs.utils;
 
+import java.beans.BeanDescriptor;
+import java.beans.BeanInfo;
+import java.beans.Beans;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -18,17 +23,18 @@ import javax.persistence.Id;
 import br.com.codersistemas.libs.annotations.Label;
 import br.com.codersistemas.libs.dto.MudancaConteudoDTO;
 import br.com.codersistemas.libs.exceptions.ReflectionUtilsException;
+import br.com.codersistemas.libs.utils.mock.Pessoa;
 
 public class ReflectionUtils {
-	
+
 	private ReflectionUtils() {
-		
+
 	}
 
 	public static void printGettersSetters(Class aClass) {
 		Method[] methods = aClass.getMethods();
 		for (Method method : methods) {
-			if(method.getName().equals("equals") || method.getName().equals("getClass")) {
+			if (method.getName().equals("equals") || method.getName().equals("getClass")) {
 				continue;
 			}
 			if (isGetter(method))
@@ -63,8 +69,11 @@ public class ReflectionUtils {
 
 	/**
 	 * Retorna o Field mesmo com herança
-	 * @param obj obj
-	 * @param nome nome
+	 * 
+	 * @param obj
+	 *            obj
+	 * @param nome
+	 *            nome
 	 * @return field field
 	 */
 	public static Field getField(Object obj, String nome) {
@@ -135,14 +144,14 @@ public class ReflectionUtils {
 				return method;
 			}
 		}
-		
+
 		geterName = getGeterNameBoolean(field.getName());
 		for (Method method : methods) {
 			if (geterName.equals(method.getName())) {
 				return method;
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -194,7 +203,9 @@ public class ReflectionUtils {
 
 	/**
 	 * id - getId, nome - getNome
-	 * @param name name
+	 * 
+	 * @param name
+	 *            name
 	 * @return String String
 	 */
 	public static String getGeterName(String name) {
@@ -215,7 +226,9 @@ public class ReflectionUtils {
 
 	/**
 	 * id - setId, nome - setNome
-	 * @param name name
+	 * 
+	 * @param name
+	 *            name
 	 * @return String String
 	 */
 	public static String getSeterName(String name) {
@@ -239,7 +252,8 @@ public class ReflectionUtils {
 
 		Field field = getField(obj, atributo);
 		if (field == null)
-			throw new ReflectionUtilsException("A classe " + obj.getClass().getName() + " não possui o atributo " + atributo);
+			throw new ReflectionUtilsException(
+					"A classe " + obj.getClass().getName() + " não possui o atributo " + atributo);
 
 		Method getter = getGetter(obj.getClass(), field);
 		if (getter == null)
@@ -260,71 +274,71 @@ public class ReflectionUtils {
 	}
 
 	public static MudancaConteudoDTO[] buscarDiferencas(Object obj1, Object obj2) {
-		
+
 		List<MudancaConteudoDTO> list = new ArrayList<>();
 		Field[] fields = getFields(obj1.getClass());
-		
+
 		for (Field field : fields) {
-			
+
 			Object valor1 = getValor(obj1, field.getName());
 			Object valor2 = getValor(obj2, field.getName());
-			
-			if(valor1 == null && valor2 == null) {
+
+			if (valor1 == null && valor2 == null) {
 				continue;
 			}
-			
-			if(valor1 != null && valor1 instanceof Date) {
+
+			if (valor1 != null && valor1 instanceof Date) {
 				valor1 = DateUtils.dateTimeToString((Date) valor1);
 			}
-			
-			if(valor2 != null && valor2 instanceof Date) {
+
+			if (valor2 != null && valor2 instanceof Date) {
 				valor2 = DateUtils.dateTimeToString((Date) valor2);
 			}
-			
+
 			String label = field.getName();
-			
+
 			Annotation annotation = getAnnotation(obj1.getClass(), field, Label.class);
-			
-			if(annotation != null) {
+
+			if (annotation != null) {
 				Label annotationLabel = (Label) annotation;
 				label = annotationLabel.name();
 			}
-			
-			Class classe = valor1 != null ? valor1.getClass() : valor2.getClass() ;
-			if(!classe.isEnum() && !classe.getName().startsWith("java.")) {
+
+			Class classe = valor1 != null ? valor1.getClass() : valor2.getClass();
+			if (!classe.isEnum() && !classe.getName().startsWith("java.")) {
 				Field[] fields2 = getFields(classe);
-				
-				//Buscar valor pela descricao
+
+				// Buscar valor pela descricao
 				boolean ok = false;
 				for (Field field2 : fields2) {
 					Annotation label2 = getAnnotation(classe, field2, Label.class);
-					if(label2 != null) {
+					if (label2 != null) {
 						Label xxx = (Label) label2;
-						if(xxx.descricao()) {
-							
-							if(valor1 != null)
+						if (xxx.descricao()) {
+
+							if (valor1 != null)
 								valor1 = getValor(valor1, field2.getName());
-							
-							if(valor2 != null)
+
+							if (valor2 != null)
 								valor2 = getValor(valor2, field2.getName());
-							
+
 							ok = true;
 							break;
-							
+
 						}
 					}
 				}
-				if(!ok) {
+				if (!ok) {
 					for (Field field2 : fields2) {
 						Annotation annotationId = getAnnotation(classe, field2, Id.class);
-						if(annotationId != null) {
-							
-							if(valor1 != null)
+						if (annotationId != null) {
+
+							if (valor1 != null)
 								valor1 = getValor(valor1, field2.getName());
-							
-							if(valor2 != null)
+
+							if (valor2 != null)
 								valor2 = getValor(valor2, field2.getName());
-							
+
 							break;
 						}
 					}
@@ -333,64 +347,71 @@ public class ReflectionUtils {
 
 			if (valor1 != null) {
 				if (!valor1.equals(valor2)) {
-					list.add(MudancaConteudoDTO.builder().noCampo(label).coAntes(valor1.toString()).coDepois(valor2 != null ? valor2.toString() : null).build());
+					list.add(MudancaConteudoDTO.builder().noCampo(label).coAntes(valor1.toString())
+							.coDepois(valor2 != null ? valor2.toString() : null).build());
 				}
 			} else {
-				if(valor2 != null) {
-					list.add(MudancaConteudoDTO.builder().noCampo(label).coAntes((valor1 != null ? valor1.toString() : null)).coDepois(valor2 != null ? valor2.toString() : null).build());
+				if (valor2 != null) {
+					list.add(MudancaConteudoDTO.builder().noCampo(label)
+							.coAntes((valor1 != null ? valor1.toString() : null))
+							.coDepois(valor2 != null ? valor2.toString() : null).build());
 				}
 			}
 		}
 
 		return list.toArray(new MudancaConteudoDTO[list.size()]);
 	}
-	
-	public static void inject(Object action, String nomeSAtributo, Object value) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+
+	public static void inject(Object action, String nomeSAtributo, Object value)
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		setValue(action, nomeSAtributo, value);
 	}
-		
-	public static void setValue(Object action, String nomeSAtributo, Object value) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-		Field fieldGitecsPermitidas = null;;
+
+	public static void setValue(Object action, String nomeSAtributo, Object value)
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		Field fieldGitecsPermitidas = null;
+		;
 		Field[] fields = getFields(action.getClass());
 		for (Field field : fields) {
-			if(field.getName().equals(nomeSAtributo)) {
+			if (field.getName().equals(nomeSAtributo)) {
 				fieldGitecsPermitidas = field;
 				break;
 			}
 		}
-		if(fieldGitecsPermitidas == null)
-			throw new ReflectionUtilsException("O atribito "+nomeSAtributo+" não existe.");
+		if (fieldGitecsPermitidas == null)
+			throw new ReflectionUtilsException("O atribito " + nomeSAtributo + " não existe.");
 		fieldGitecsPermitidas.setAccessible(true);
 		fieldGitecsPermitidas.set(action, value);
 	}
 
-	public static <T> T setValues(Class<T> classe, Object...args) throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException, IllegalArgumentException {
-		
+	public static <T> T setValues(Class<T> classe, Object... args) throws InstantiationException,
+			IllegalAccessException, NoSuchFieldException, SecurityException, IllegalArgumentException {
+
 		T obj = classe.newInstance();
-		
+
 		String atribute = null;
 		Object valor;
-		
+
 		for (int i = 0; i < args.length; i++) {
-			if( i % 2 == 0) {
+			if (i % 2 == 0) {
 				atribute = (String) args[i];
-			}else {
+			} else {
 				valor = args[i];
 				setValue(obj, atribute, valor);
 			}
 		}
-		
+
 		return obj;
 	}
 
 	public static Class getTipoGenericoRetorno(Method method) {
 		String returnType = method.getReturnType().getSimpleName();
-		if(method.getReturnType() == List.class) {
+		if (method.getReturnType() == List.class) {
 			String typeGeneric = "";
 			if (method.getGenericReturnType() instanceof ParameterizedType) {
-				 ParameterizedType type = (ParameterizedType) method.getGenericReturnType();
-				 Type[] actualTypeArguments = type.getActualTypeArguments();
-				 for (Type type2 : actualTypeArguments) {
+				ParameterizedType type = (ParameterizedType) method.getGenericReturnType();
+				Type[] actualTypeArguments = type.getActualTypeArguments();
+				for (Type type2 : actualTypeArguments) {
 					Class c = (Class) type2;
 					typeGeneric = c.getSimpleName();
 					return c;
@@ -402,17 +423,17 @@ public class ReflectionUtils {
 
 	public static String getTipoGenericoRetornoString(Method method) {
 		String returnType = method.getReturnType().getSimpleName();
-		if(method.getReturnType() == List.class) {
+		if (method.getReturnType() == List.class) {
 			String typeGeneric = "";
 			if (method.getGenericReturnType() instanceof ParameterizedType) {
-				 ParameterizedType type = (ParameterizedType) method.getGenericReturnType();
-				 Type[] actualTypeArguments = type.getActualTypeArguments();
-				 for (Type type2 : actualTypeArguments) {
+				ParameterizedType type = (ParameterizedType) method.getGenericReturnType();
+				Type[] actualTypeArguments = type.getActualTypeArguments();
+				for (Type type2 : actualTypeArguments) {
 					Class c = (Class) type2;
 					typeGeneric = c.getSimpleName();
 				}
 			}
-			returnType = method.getReturnType().getSimpleName()+"<"+typeGeneric+">";
+			returnType = method.getReturnType().getSimpleName() + "<" + typeGeneric + ">";
 		}
 		return returnType;
 	}
@@ -420,125 +441,151 @@ public class ReflectionUtils {
 	public static boolean getContemRetorno(Method method) {
 		return method.getGenericReturnType() != void.class;
 	}
-	
+
 	public static Object getValorLiteral(Object obj, String atributo) {
 		Object valor = getValor(obj, atributo);
-		
-		if(valor != null) {
-			if ( valor instanceof String ) {
+
+		if (valor != null) {
+			if (valor instanceof String) {
 				return "\"" + valor + "\"";
 			}
-			
-			if ( valor instanceof Integer ) {
+
+			if (valor instanceof Integer) {
 				return valor.toString();
 			}
-			
-			if ( valor instanceof Long ) {
-				return valor.toString()+"L";
+
+			if (valor instanceof Long) {
+				return valor.toString() + "L";
 			}
-			
-			if ( valor instanceof Float ) {
-				return valor.toString()+"F";
+
+			if (valor instanceof Float) {
+				return valor.toString() + "F";
 			}
-			
-			if ( valor instanceof Double ) {
+
+			if (valor instanceof Double) {
 				return valor.toString();
 			}
-			
-			if ( valor instanceof Date ) {
+
+			if (valor instanceof Date) {
 				return valor.toString();
 			}
-			
-			if ( valor instanceof Enum ) {
+
+			if (valor instanceof Enum) {
 				return valor.getClass().getSimpleName() + "." + valor.toString();
 			}
-			
-			if ( valor instanceof Short ) {
-				return "(short) "+valor.toString();
+
+			if (valor instanceof Short) {
+				return "(short) " + valor.toString();
 			}
-			
-			if ( valor instanceof Boolean ) {
+
+			if (valor instanceof Boolean) {
 				return valor.toString();
 			}
-			
+
 		} else {
 			return "null";
 		}
-		
+
 		return null;
 	}
 
-	public static <T> T clone(T obj1) throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException, IllegalArgumentException {
+	public static <T> T clone(T obj1) throws InstantiationException, IllegalAccessException, NoSuchFieldException,
+			SecurityException, IllegalArgumentException {
 		T obj2 = (T) obj1.getClass().newInstance();
 		Field[] fields = ReflectionUtils.getFields(obj1.getClass());
-		for (Field field : fields) 
+		for (Field field : fields)
 			ReflectionUtils.setValue(obj2, field.getName(), ReflectionUtils.getValor(obj1, field.getName()));
 		return obj2;
 	}
 
 	public static String toString(Object obj1) {
 		Field[] fields = getFields(obj1.getClass());
-		
+
 		StringBuilder sb = new StringBuilder();
-		
+
 		for (Field field : fields) {
-			
+
 			Annotation annotation = getAnnotation(obj1.getClass(), field, Label.class);
 			String nome = null;
-			if(annotation != null) {
+			if (annotation != null) {
 				Label label = (Label) annotation;
 				nome = label.name();
 			} else {
 				nome = field.getName();
 			}
-			
+
 			sb.append(nome);
 			sb.append("=");
-			
+
 			Object valor = getValor(obj1, field.getName());
-			
+
 			sb.append(valor != null ? valor : "");
 			sb.append(",");
-			
+
 		}
 		return sb.toString();
 	}
 
-	public static Object toStringNotNulls(Object obj1, String...ignores) {
-		
+	public static Object toStringNotNulls(Object obj1, String... ignores) {
+
 		Field[] fields = getFields(obj1.getClass());
-		
+
 		StringBuilder sb = new StringBuilder();
-		
-		ignorarFiel:
-		for (Field field : fields) {
-			
-			for(String ignore : ignores) {
-				if(ignore.equals(field.getName())) {
+
+		ignorarFiel: for (Field field : fields) {
+
+			for (String ignore : ignores) {
+				if (ignore.equals(field.getName())) {
 					continue ignorarFiel;
 				}
 			}
-			
+
 			Annotation annotation = getAnnotation(obj1.getClass(), field, Label.class);
 			String nome = null;
-			if(annotation != null) {
+			if (annotation != null) {
 				Label label = (Label) annotation;
 				nome = label.name();
 			} else {
 				nome = field.getName();
 			}
-			
+
 			Object valor = getValor(obj1, field.getName());
-			
-			if(valor != null && !valor.equals("")) {
+
+			if (valor != null && !valor.equals("")) {
 				sb.append(nome);
 				sb.append("=");
 				sb.append(valor);
 				sb.append(",");
 			}
-			
+
 		}
-			
+
+		return sb.toString();
+	}
+
+	public static String printCreateObjectCode(Object instance, String var) throws Exception {
+		
+		StringBuilder sb = new StringBuilder();
+		BeanInfo beanInfo = Introspector.getBeanInfo(instance.getClass());
+
+		BeanDescriptor bd = beanInfo.getBeanDescriptor();
+		System.out.print(bd.getName());
+		System.out.print(" ");
+		System.out.print(var);
+		System.out.println(" = new " + bd.getName() + "();");
+
+		for (PropertyDescriptor pd : beanInfo.getPropertyDescriptors()) {
+			if(pd.getWriteMethod() == null || pd.getReadMethod() == null)
+				continue;
+			System.out.print(var);
+			System.out.print(".");
+			System.out.print(pd.getWriteMethod().getName());
+			System.out.print("(");
+			System.out.print(getValorLiteral(instance, pd.getName()));
+			System.out.print(");");
+			System.out.println("");
+		}
+		
 		return sb.toString();
 	}
 
