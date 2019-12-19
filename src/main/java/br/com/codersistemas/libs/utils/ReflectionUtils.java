@@ -5,7 +5,6 @@ package br.com.codersistemas.libs.utils;
 
 import java.beans.BeanDescriptor;
 import java.beans.BeanInfo;
-import java.beans.Beans;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
@@ -23,7 +22,6 @@ import javax.persistence.Id;
 import br.com.codersistemas.libs.annotations.Label;
 import br.com.codersistemas.libs.dto.MudancaConteudoDTO;
 import br.com.codersistemas.libs.exceptions.ReflectionUtilsException;
-import br.com.codersistemas.libs.utils.mock.Pessoa;
 
 public class ReflectionUtils {
 

@@ -1,6 +1,6 @@
 package br.com.codersistemas.libs.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -15,7 +15,6 @@ import javax.persistence.Column;
 import org.junit.Test;
 
 import br.com.codersistemas.libs.dto.MudancaConteudoDTO;
-import br.com.codersistemas.libs.utils.ReflectionUtils;
 import br.com.codersistemas.libs.utils.mock.Carro;
 import br.com.codersistemas.libs.utils.mock.Funcionario;
 import br.com.codersistemas.libs.utils.mock.Genero;
