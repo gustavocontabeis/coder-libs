@@ -50,6 +50,6 @@ public class StringUtil extends StringUtils {
 	}
 
 	public static String toUnderlineCase(String string) {
-		return string.replaceAll("([a-z])([A-Z]+)", "$1_$2");
+		return string.replaceAll("([a-z])([A-Z]+)", "$1_$2").toLowerCase();
 	}
 }

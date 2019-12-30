@@ -586,5 +586,93 @@ public class ReflectionUtils {
 		
 		return sb.toString();
 	}
+	
+	@SuppressWarnings("rawtypes")
+	public static Type getGenericType(Field field) {
+		Type genericFieldType = field.getGenericType();
+		if (genericFieldType instanceof ParameterizedType) {
+			ParameterizedType aType = (ParameterizedType) genericFieldType;
+			Type[] fieldArgTypes = aType.getActualTypeArguments();
+			for (Type fieldArgType : fieldArgTypes) {
+				Class fieldArgClass = (Class) fieldArgType;
+				return fieldArgClass;
+			}
+		}
+		return null;
+	}
 
+	public static Field[] getAttributesOffType(Class classe, Class type) {
+		List<Field>fields = new ArrayList<Field>();
+		for (Field field : classe.getDeclaredFields()) {
+			if(field.getType() == type){
+				fields.add(field);
+			}
+		}
+		Field[] array = new Field[fields.size()];
+		return fields.toArray(array);
+	}
+
+	@SuppressWarnings("rawtypes")
+	private static String getTipo(Field field) {
+		return field.getType().getSimpleName() + (isGenericType(field) ? "<" + ((Class) getGenericType(field)).getSimpleName() + ">" : "");
+	}
+	@SuppressWarnings("rawtypes")
+	public static Type getGenericType2(Field field) {
+		Type genericFieldType = field.getGenericType();
+		if (genericFieldType instanceof ParameterizedType) {
+			ParameterizedType aType = (ParameterizedType) genericFieldType;
+			Type[] fieldArgTypes = aType.getActualTypeArguments();
+			for (Type fieldArgType : fieldArgTypes) {
+				Class fieldArgClass = (Class) fieldArgType;
+				return fieldArgClass;
+			}
+		}
+		return null;
+	}
+
+	public static Type getGenericType(Method method) {
+		Type returnType = method.getGenericReturnType();
+
+		if(returnType instanceof ParameterizedType){
+		    ParameterizedType type = (ParameterizedType) returnType;
+		    Type[] typeArguments = type.getActualTypeArguments();
+		    for(Type typeArgument : typeArguments){
+		        Class typeArgClass = (Class) typeArgument;
+		        return typeArgClass;
+		    }
+		}
+		return null;
+	}
+
+	public static boolean isGenericType(Field field) {
+		Type type = field.getGenericType();
+		return type instanceof ParameterizedType;
+	}
+	
+	public static boolean isGenericType(Method method) {
+		Type returnType = method.getGenericReturnType();
+
+		if(returnType instanceof ParameterizedType){
+		    ParameterizedType type = (ParameterizedType) returnType;
+		    Type[] typeArguments = type.getActualTypeArguments();
+		    for(Type typeArgument : typeArguments){
+		        Class typeArgClass = (Class) typeArgument;
+		        return true;
+		    }
+		}
+		return false;
+	}
+	
+
+	/**
+	 * Retorna o tipo com generics se nescessario.
+	 * 
+	 * @param field
+	 * @return String
+	 */
+	@SuppressWarnings("rawtypes")
+	public static String getTipo2(Field field) {
+		return field.getType().getSimpleName() + (isGenericType(field) ? "<" + ((Class) getGenericType(field)).getSimpleName() + ">" : "");
+	}
+	
 }
