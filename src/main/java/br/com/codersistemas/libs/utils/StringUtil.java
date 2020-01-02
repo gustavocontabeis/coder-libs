@@ -82,7 +82,7 @@ public class StringUtil extends StringUtils {
 	}
 
 	public static String uncaplitalizeSingular(String name) {
-		name = capitalize(name);
+		name = uncapitalize(name);
 		return name;
 	}
 

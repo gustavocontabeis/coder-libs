@@ -41,17 +41,17 @@ public class StringUtilTest {
 
 	@Test
 	public void testToUnderlineCase() { 
-		assertTrue("gustavo_Da_Silva".equals(StringUtil.toUnderlineCase("gustavoDaSilva")));
-		assertTrue("Gustavo_Da_Silva".equals(StringUtil.toUnderlineCase("GustavoDaSilva")));
+		assertTrue("gustavo_da_silva".equals(StringUtil.toUnderlineCase("gustavoDaSilva")));
+		assertTrue("gustavo_da_silva".equals(StringUtil.toUnderlineCase("GustavoDaSilva")));
 	}
 
 	@Test
 	public void testLabel() {
 		assertTrue("Nome".equals(StringUtil.label("nome")));
 		assertTrue("Gustavo da silva".equals(StringUtil.label("gustavo_da_silva")));
-		assertTrue("Gustavo da Silva".equals(StringUtil.label("gustavoDaSilva")));
-		assertTrue("Gustavo da Silva".equals(StringUtil.label("GustavoDaSilva")));
-		assertTrue("Data de Nascimento".equals(StringUtil.label("dataDeNascimento")));
+		assertTrue("Gustavo da silva".equals(StringUtil.label("gustavoDaSilva")));
+		assertTrue("Gustavo da silva".equals(StringUtil.label("GustavoDaSilva")));
+		assertTrue("Data de nascimento".equals(StringUtil.label("dataDeNascimento")));
 		assertTrue("Descrição".equals(StringUtil.label("descricao")));
 		assertTrue("Descrições".equals(StringUtil.label("descricoes")));
 	}
