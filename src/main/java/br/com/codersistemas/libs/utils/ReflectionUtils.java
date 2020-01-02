@@ -674,5 +674,10 @@ public class ReflectionUtils {
 	public static String getTipo2(Field field) {
 		return field.getType().getSimpleName() + (isGenericType(field) ? "<" + ((Class) getGenericType(field)).getSimpleName() + ">" : "");
 	}
+
+	public static Object createObjectWithValues() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

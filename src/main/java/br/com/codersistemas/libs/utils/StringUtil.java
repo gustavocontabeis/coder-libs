@@ -52,4 +52,38 @@ public class StringUtil extends StringUtils {
 	public static String toUnderlineCase(String string) {
 		return string.replaceAll("([a-z])([A-Z]+)", "$1_$2").toLowerCase();
 	}
+
+	public static String caplitalizePlural(String name) {
+		name = capitalize(name);
+		name = plural(name);
+		return name;
+	}
+
+	private static String plural(String name) {
+		
+		if(name.endsWith("cao")) {
+			name = StringUtils.replace(name, "cao", "coes");
+		} else {
+			name = name + "s";
+		}
+		
+		return name;
+	}
+
+	public static String uncaplitalizePlural(String name) {
+		name = uncapitalize(name);
+		name = plural(name);
+		return name;
+	}
+
+	public static String caplitalizeSingular(String name) {
+		name = capitalize(name);
+		return name;
+	}
+
+	public static String uncaplitalizeSingular(String name) {
+		name = capitalize(name);
+		return name;
+	}
+
 }
