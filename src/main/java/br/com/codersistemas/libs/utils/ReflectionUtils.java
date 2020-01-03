@@ -13,13 +13,19 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 
 import br.com.codersistemas.libs.annotations.Label;
+import br.com.codersistemas.libs.dto.AtributoDTO;
 import br.com.codersistemas.libs.dto.MudancaConteudoDTO;
 import br.com.codersistemas.libs.exceptions.ReflectionUtilsException;
 
@@ -679,5 +685,97 @@ public class ReflectionUtils {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
+	public static List<AtributoDTO> getAtributos(Class classe) {
+		
+		List<AtributoDTO> atributos = new ArrayList<>();
+		
+		Field[] fields = getFields(classe);
+		
+		for (Field field : fields) {
+			
+			String name = field.getName();
+			System.out.println(name);
+			if (!"serialVersionUID".equals(name)) {
+			
+				Column column = (Column) ReflectionUtils.getAnnotation(classe, field, Column.class);
+				
+				AtributoDTO atributo = new AtributoDTO();
+				atributo.setNome(field.getName());
+				atributo.setColuna(nomeColuna(classe, field));
+				atributo.setObrigatorio(column != null && !column.nullable());
+				atributo.setRotulo(StringUtil.label(field.getName()) );
+				atributo.setTamanho(column != null ? column.length() : 0);
+				atributo.setTipo(field.getType().getName());
+				atributos.add(atributo);
+				
+				if(field.getType().isPrimitive())
+					throw new RuntimeException("N�o utilize tipos primitivos");
+				
+				if (field.getType().isEnum()) {
+					System.out.println("");
+					Class classeEnum = field.getType();
+					Object[] enumConstants = classeEnum.getEnumConstants();
+					String[] enumConstantsStrings  = new String[enumConstants.length];
+					for (int i = 0; i < enumConstants.length; i++) 
+						enumConstantsStrings[i] = Arrays.asList(classeEnum.getEnumConstants()).get(i).toString();
+					atributo.setEnumaracao(enumConstantsStrings);
+				} else if (field.getType() == Long.class) {
+//					if ("id".equals(field.getName())){
+//						String colunaId = StringUtil.toUnderlineCase( JPAUtil.gerarColunaId(classe) );
+//						String unCapitalize = StringUtil.toUnderlineCase( StringUtil.uncapitalize(classe.getSimpleName() ) );
+//						//anotacoes += ("@Id @GeneratedValue(generator=\"seq_:name\", strategy=GenerationType.SEQUENCE) @SequenceGenerator(name=\"seq_:name\") @Column(name=\""+colunaId+"\") ").replace(":name", unCapitalize);
+//					}
+				} else if (field.getType() == Date.class) {
+					//anotacoes += "@Temporal(TemporalType.DATE) \n";
+					//anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
+				} else if (field.getType() == String.class) {
+					//anotacoes += "@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
+				} else if (field.getType() == Integer.class) {
+					//anotacoes += "@Column(name=\""+nomeColuna+"\", nullable=true)";
+				} else if (field.getType() == Float.class) {
+					//anotacoes += "@Column(name=\""+nomeColuna+"\", length=10, precision=10, scale=2, nullable=false)";
+				} else if (field.getType() == BigDecimal.class) {
+					//anotacoes += "@Column(name=\""+nomeColuna+"\", length=10, precision=10, scale=2, nullable=false)";
+				} else if (field.getType() == Double.class) {
+					//anotacoes += "@Column(name=\""+nomeColuna+"\", length=10, precision=10, scale=2, nullable=false)";
+				} else if (field.getType() == Boolean.class) {
+					//anotacoes += "@Column(name=\""+nomeColuna+"\", length=1, nullable=false)";
+				} else if (field.getType() == List.class || field.getType() == Set.class) {
+					Class genericType = (Class) ReflectionUtils.getGenericType(field);
+					Field[] f = ReflectionUtils.getAttributesOffType(genericType, classe);
+					//if(f.length==1)
+					//anotacoes += "@OneToMany(mappedBy=\""+(f[0]).getName()+"\")";
+					
+				} else if (!"java".startsWith(field.getType().getName())) {
+					boolean isEntity = JPAUtil.isEntity(field);
+					if(isEntity){
+						Field id = JPAUtil.getId(field);
+						String fk_name = classe.getSimpleName()+"_"+field.getType().getSimpleName()+"_fk";
+						//anotacoes += "@ManyToOne @JoinColumn(name=\""+ JPAUtil.gerarColunaId(field.getType())+"\", nullable=false) @ForeignKey(name=\""+fk_name+"\")";
+					}
+				} else {
+					throw new RuntimeException("Erro ao gerar atributo de " + field.getType().getName());
+				}
+			}
+		}
+
+		return atributos;
+	}
+
+	private static String nomeColuna(Class classe, Field field) {
+		
+		Column column = (Column) getAnnotation(classe, field, Column.class);
+		if(column != null) {
+			return column.name();
+		}
+		
+		JoinColumn joinColumn = (JoinColumn) getAnnotation(classe, field, Column.class);
+		if(joinColumn != null) {
+			return joinColumn.name();
+		}
+		
+		return JPAUtil.nomeColuna(field); 
+	}
+
 }
