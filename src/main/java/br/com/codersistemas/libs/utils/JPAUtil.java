@@ -100,6 +100,7 @@ public class JPAUtil {
 						anotacoes += ("@Id @GeneratedValue(generator=\"seq_:name\", strategy=GenerationType.SEQUENCE) @SequenceGenerator(name=\"seq_:name\") @Column(name=\""+colunaId+"\") ").replace(":name", unCapitalize);
 					}
 				} else if (field.getType() == Date.class) {
+					anotacoes += "@JsonFormat(pattern=\"dd/MM/yyyy\")\n";
 					anotacoes += "@Temporal(TemporalType.DATE) \n";
 					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
 				} else if (field.getType() == String.class) {

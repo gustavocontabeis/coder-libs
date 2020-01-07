@@ -690,18 +690,21 @@ public class ReflectionUtils {
 		
 		List<AtributoDTO> atributos = new ArrayList<>();
 		
+		String classeInstancia = StringUtil.uncapitalize(classe.getSimpleName());
+		
 		Field[] fields = getFields(classe);
 		
 		for (Field field : fields) {
 			
 			String name = field.getName();
-			System.out.println(name);
+			//System.out.println(name);
 			if (!"serialVersionUID".equals(name)) {
 			
 				Column column = (Column) ReflectionUtils.getAnnotation(classe, field, Column.class);
 				
 				AtributoDTO atributo = new AtributoDTO();
 				atributo.setNome(field.getName());
+				atributo.setClasseInstancia(classeInstancia);
 				atributo.setColuna(nomeColuna(classe, field));
 				atributo.setObrigatorio(column != null && !column.nullable());
 				atributo.setRotulo(StringUtil.label(field.getName()) );
