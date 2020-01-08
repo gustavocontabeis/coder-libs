@@ -56,10 +56,10 @@ public class PessoaEntity implements Serializable {
 	private Date dataDeNacimento;
 
 	@ManyToOne @JoinColumn(name="id_pessoa", nullable=false)
-	private Pessoa mae;
+	private PessoaEntity mae;
 
 	@OneToMany(mappedBy="mae")
-	private List<Pessoa> filhos;
+	private List<PessoaEntity> filhos;
 
 }
 //Ajuste os tamanhos dos campos.

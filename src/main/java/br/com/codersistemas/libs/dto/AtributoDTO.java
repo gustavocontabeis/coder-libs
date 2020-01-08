@@ -9,7 +9,7 @@ public class AtributoDTO {
 	private String coluna;
 	private String rotulo;
 	private boolean obrigatorio;
-	private String tipo;
+	private Class tipo;
 	private int tamanho;
 	private String[] enumaracao;
 }

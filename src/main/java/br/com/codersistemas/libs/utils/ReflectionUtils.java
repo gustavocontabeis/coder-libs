@@ -709,7 +709,7 @@ public class ReflectionUtils {
 				atributo.setObrigatorio(column != null && !column.nullable());
 				atributo.setRotulo(StringUtil.label(field.getName()) );
 				atributo.setTamanho(column != null ? column.length() : 0);
-				atributo.setTipo(field.getType().getName());
+				atributo.setTipo(field.getType());
 				atributos.add(atributo);
 				
 				if(field.getType().isPrimitive())
