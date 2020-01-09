@@ -709,14 +709,13 @@ public class ReflectionUtils {
 				atributo.setObrigatorio(column != null && !column.nullable());
 				atributo.setRotulo(StringUtil.label(field.getName()) );
 				atributo.setTamanho(column != null ? column.length() : 0);
-				atributo.setTipo(field.getType());
+				atributo.setTipo2(field.getType());
 				atributos.add(atributo);
 				
 				if(field.getType().isPrimitive())
 					throw new RuntimeException("N�o utilize tipos primitivos");
 				
 				if (field.getType().isEnum()) {
-					System.out.println("");
 					Class classeEnum = field.getType();
 					Object[] enumConstants = classeEnum.getEnumConstants();
 					String[] enumConstantsStrings  = new String[enumConstants.length];
