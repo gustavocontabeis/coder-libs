@@ -12,6 +12,8 @@ public class AtributoDTO {
 	private boolean collection;
 	private String tipo;
 	private String tipoClasse;
+	private String tipoClasseGenerica;
+	private String tipoClasseGenericaNome;
 	private int tamanho;
 	private int precisao;
 	private boolean fk;
