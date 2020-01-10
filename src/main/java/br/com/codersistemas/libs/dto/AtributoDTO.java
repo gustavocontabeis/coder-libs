@@ -5,12 +5,17 @@ import lombok.Data;
 @Data
 public class AtributoDTO {
 	private String nome;
-	private String classeInstancia;
 	private String coluna;
 	private String rotulo;
 	private boolean obrigatorio;
+	private boolean isEnum;
+	private boolean collection;
 	private String tipo;
-	private Class tipo2;
+	private String tipoClasse;
 	private int tamanho;
+	private int precisao;
+	private boolean fk;
+	private boolean pk;
 	private String[] enumaracao;
+	private EntidadeDTO entidade;
 }

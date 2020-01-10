@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class AplicacaoDTO {
 	
-	private String nome;
+	private String nome, pacoteBackend;
 	private List<EntidadeDTO> entidades;
 
 }

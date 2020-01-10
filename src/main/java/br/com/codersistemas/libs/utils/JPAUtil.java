@@ -7,10 +7,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 
 import org.apache.commons.lang3.StringUtils;
+
+import br.com.codersistemas.libs.dto.ColumnDTO;
 
 public class JPAUtil {
 
@@ -159,5 +163,46 @@ public class JPAUtil {
 	 */
 	public static Field getId(Field field) {
 		return ReflectionUtils.getField(field.getType(), "id");
+	}
+
+	public static ColumnDTO getDto(Class classe, Field field) {
+		ColumnDTO dto = new ColumnDTO();
+		Annotation annotation = ReflectionUtils.getAnnotation(classe, field, Column.class);
+		if(annotation != null) {
+			Column column = (Column) annotation;
+			dto.setFk(false);
+			dto.setName(column.name());
+			dto.setLength(column.length());
+			dto.setNullable(column.nullable());
+			dto.setPrecision(column.precision());
+			dto.setScale(column.scale());
+			dto.setTable(column.table());
+			dto.setUnique(column.unique());
+			dto.setUpdatable(column.updatable());
+			dto.setInsertable(column.insertable());
+		} else {
+			annotation = ReflectionUtils.getAnnotation(classe, field, JoinColumn.class);
+			if(annotation != null) {
+				JoinColumn column = (JoinColumn) annotation;
+				dto.setFk(true);
+				dto.setName(column.name());
+				dto.setLength(0);
+				dto.setNullable(column.nullable());
+				dto.setPrecision(0);
+				dto.setScale(0);
+				dto.setTable(column.table());
+				dto.setUnique(column.unique());
+				dto.setUpdatable(column.updatable());
+				dto.setInsertable(column.insertable());
+			}
+		}
+		
+		annotation = ReflectionUtils.getAnnotation(classe, field, Id.class);
+		if(annotation != null) {
+			Id id = (Id) annotation;
+			dto.setPk(true);
+		}
+		
+		return dto;
 	}
 }

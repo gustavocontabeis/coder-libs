@@ -26,6 +26,7 @@ import javax.persistence.JoinColumn;
 
 import br.com.codersistemas.libs.annotations.Label;
 import br.com.codersistemas.libs.dto.AtributoDTO;
+import br.com.codersistemas.libs.dto.EntidadeDTO;
 import br.com.codersistemas.libs.dto.MudancaConteudoDTO;
 import br.com.codersistemas.libs.exceptions.ReflectionUtilsException;
 
@@ -704,12 +705,13 @@ public class ReflectionUtils {
 				
 				AtributoDTO atributo = new AtributoDTO();
 				atributo.setNome(field.getName());
-				atributo.setClasseInstancia(classeInstancia);
+				atributo.setEntidade(new EntidadeDTO());
+				atributo.getEntidade().setNomeInstancia(classeInstancia);
 				atributo.setColuna(nomeColuna(classe, field));
 				atributo.setObrigatorio(column != null && !column.nullable());
 				atributo.setRotulo(StringUtil.label(field.getName()) );
 				atributo.setTamanho(column != null ? column.length() : 0);
-				atributo.setTipo2(field.getType());
+				atributo.setTipoClasse(field.getType().getName());
 				atributos.add(atributo);
 				
 				if(field.getType().isPrimitive())
