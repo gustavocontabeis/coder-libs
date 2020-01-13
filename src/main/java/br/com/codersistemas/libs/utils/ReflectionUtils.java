@@ -141,7 +141,7 @@ public class ReflectionUtils {
 		return null;
 	}
 
-	private static Method getGetter(Class obj, Field field) {
+	public static Method getGetter(Class obj, Field field) {
 		String geterName = getGeterName(field.getName());
 		Method[] methods = getMethods(obj);
 		for (Method method : methods) {

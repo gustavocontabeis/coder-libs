@@ -1,8 +1,10 @@
 package br.com.codersistemas.libs.dto;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString(exclude="entidade")
 public class AtributoDTO {
 	private String nome;
 	private String coluna;

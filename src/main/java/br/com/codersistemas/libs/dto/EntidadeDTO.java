@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data 
 public class EntidadeDTO {
-	private String nome, nomeInstancia, nomeClasse, rotulo, tabela;
+	private String nome, nomeInstancia, nomeClasse, rotulo, tabela, restURI;
 	private AplicacaoDTO aplicacao;
 	private List<AtributoDTO> atributos;
 }
