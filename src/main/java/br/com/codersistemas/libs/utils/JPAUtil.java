@@ -103,26 +103,30 @@ public class JPAUtil {
 					if ("id".equals(field.getName())){
 						String colunaId = StringUtil.toUnderlineCase( JPAUtil.gerarColunaId(classe) );
 						String unCapitalize = StringUtil.toUnderlineCase( StringUtil.uncapitalize(classe.getSimpleName() ) );
-						anotacoes += ("@Id @GeneratedValue(generator=\"seq_:name\", strategy=GenerationType.SEQUENCE) @SequenceGenerator(name=\"seq_:name\") @Column(name=\""+colunaId+"\") ").replace(":name", unCapitalize);
+						anotacoes += ("@Id @GeneratedValue(generator=\"seq_:name\", strategy=GenerationType.SEQUENCE) @SequenceGenerator(name=\"seq_:name\") @Column(name=\""+colunaId+"\", nullable=false) ").replace(":name", unCapitalize);
 					}
 				} else if (field.getType() == Date.class || field.getType() == LocalDate.class) {
 					anotacoes += "@JsonFormat(pattern=\"dd/MM/yyyy\")\n";
 					anotacoes += "\t@Temporal(TemporalType.DATE) \n";
+<<<<<<< HEAD
 					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
 				} else if (field.getType() == LocalDateTime.class) {
 					anotacoes += "\t@JsonFormat(pattern=\"dd/MM/yyyy HH:mm\")\n";
 					anotacoes += "\t@Temporal(TemporalType.TIMESTAMP) \n";
 					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
+=======
+					anotacoes += "\t@Column(name=\""+nomeColuna+"\", nullable=false)";
+>>>>>>> f54e367599603f4e44244baf6a2a81905ccfe442
 				} else if (field.getType() == String.class) {
 					anotacoes += "@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
 				} else if (field.getType() == Integer.class) {
 					anotacoes += "@Column(name=\""+nomeColuna+"\", nullable=true)";
 				} else if (field.getType() == Float.class) {
-					anotacoes += "@Column(name=\""+nomeColuna+"\", length=10, precision=10, scale=2, nullable=false)";
+					anotacoes += "@Column(name=\""+nomeColuna+"\", precision=10, scale=2, nullable=false)";
 				} else if (field.getType() == BigDecimal.class) {
-					anotacoes += "@Column(name=\""+nomeColuna+"\", length=10, precision=10, scale=2, nullable=false)";
+					anotacoes += "@Column(name=\""+nomeColuna+"\", precision=10, scale=2, nullable=false)";
 				} else if (field.getType() == Double.class) {
-					anotacoes += "@Column(name=\""+nomeColuna+"\", length=10, precision=10, scale=2, nullable=false)";
+					anotacoes += "@Column(name=\""+nomeColuna+"\", precision=10, scale=2, nullable=false)";
 				} else if (field.getType() == Boolean.class) {
 					anotacoes += "@Column(name=\""+nomeColuna+"\", length=1, nullable=false)";
 				} else if (field.getType() == List.class || field.getType() == Set.class) {
