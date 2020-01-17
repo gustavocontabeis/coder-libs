@@ -56,12 +56,12 @@ public class StringUtilTest {
 		assertTrue("Descrições".equals(StringUtil.label("descricoes")));
 	}
 	
-	
 	@Test
 	public void testFindTag() {
 		
 		StringBuilder sb = new StringBuilder();
 		String input = "<font size=\"5\"><p>some text</p>\n<p>another text</p></font>";
+		
 //		//String regex = "</?(font|p){1}.*?/?>";
 //		String regex = "<p>*.?</p>";
 //		String stripped = input.replaceAll(regex, "");
@@ -71,7 +71,6 @@ public class StringUtilTest {
 //		while (matcher.find()) {
 //			String group = matcher.group();
 //			System.out.println(group);
-//			
 //		}
 		
 		String form = 
@@ -95,11 +94,12 @@ public class StringUtilTest {
 		Document document = Jsoup.parse(form);
 		Elements paragraph = document.select("form");
 		System.out.println(paragraph.html());
-		
-		
 	}
 	
-	
-	
+	@Test
+	public void testCaplitalizePlural() {
+		assertTrue("Gustavos".equals(StringUtil.caplitalizePlural("gustavo")));
+		assertTrue("Coracoes".equals(StringUtil.caplitalizePlural("coracao")));
+	}
 	
 }

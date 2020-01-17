@@ -3,6 +3,8 @@ package br.com.codersistemas.libs.utils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -80,7 +82,7 @@ public class JPAUtil {
 			if("id".equals(field.getName()))
 				contemId = true;
 		if(!contemId)
-			throw new RuntimeException("A classe "+classe.getName()+" n�o cont�m id.");
+			throw new RuntimeException("A classe "+classe.getName()+" nao contem id.");
 		
 		StringBuilder sb = new StringBuilder();
 		
@@ -93,7 +95,7 @@ public class JPAUtil {
 				sb.append("\n");
 				
 				if(field.getType().isPrimitive())
-					throw new RuntimeException("N�o utilize tipos primitivos");
+					throw new RuntimeException("Nao utilize tipos primitivos");
 				
 				if (field.getType().isEnum()) {
 					anotacoes += "@Enumerated(EnumType.STRING) @Column(length=255, nullable=false)";
@@ -103,9 +105,13 @@ public class JPAUtil {
 						String unCapitalize = StringUtil.toUnderlineCase( StringUtil.uncapitalize(classe.getSimpleName() ) );
 						anotacoes += ("@Id @GeneratedValue(generator=\"seq_:name\", strategy=GenerationType.SEQUENCE) @SequenceGenerator(name=\"seq_:name\") @Column(name=\""+colunaId+"\") ").replace(":name", unCapitalize);
 					}
-				} else if (field.getType() == Date.class) {
+				} else if (field.getType() == Date.class || field.getType() == LocalDate.class) {
 					anotacoes += "@JsonFormat(pattern=\"dd/MM/yyyy\")\n";
-					anotacoes += "@Temporal(TemporalType.DATE) \n";
+					anotacoes += "\t@Temporal(TemporalType.DATE) \n";
+					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
+				} else if (field.getType() == LocalDateTime.class) {
+					anotacoes += "\t@JsonFormat(pattern=\"dd/MM/yyyy HH:mm\")\n";
+					anotacoes += "\t@Temporal(TemporalType.TIMESTAMP) \n";
 					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
 				} else if (field.getType() == String.class) {
 					anotacoes += "@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";

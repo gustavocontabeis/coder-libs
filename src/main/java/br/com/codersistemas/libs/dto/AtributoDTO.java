@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class AtributoDTO {
 	private String nome;
+	private String nomeInstancia;
+	private String nomeLista;
 	private String coluna;
 	private String rotulo;
 	private boolean obrigatorio;
