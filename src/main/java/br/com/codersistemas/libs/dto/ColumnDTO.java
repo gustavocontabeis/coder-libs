@@ -3,7 +3,7 @@ package br.com.codersistemas.libs.dto;
 import lombok.Data;
 
 @Data
-public class ColumnDTO {
+public class ColumnDTO {//sss
 	private String name;
 	private int length;
 	private boolean nullable;
