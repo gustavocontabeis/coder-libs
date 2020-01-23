@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class AplicacaoDTO { //aaa
+public class AplicacaoDTO {
 	
 	private String nome, pacoteBackend;
 	private List<EntidadeDTO> entidades;
