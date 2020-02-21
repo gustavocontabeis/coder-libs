@@ -7,6 +7,7 @@ import lombok.ToString;
 @ToString(exclude="entidade")
 public class AtributoDTO {
 	private String nome;
+	private String nomeCapitalizado;
 	private String nomeInstancia;
 	private String nomeLista;
 	private String coluna;

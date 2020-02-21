@@ -5,9 +5,12 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -59,13 +62,16 @@ public class JPAUtil {
 		sb.append("\n");
 		sb.append("import java.io.Serializable;\n");
 		sb.append("import java.util.*;\n");
+		sb.append("import lombok.*;\n");
 		sb.append("import javax.persistence.*;\n");
+		sb.append("import javax.validation.constraints.*;\n");
 		sb.append("\n");
 		sb.append("@Data\n");
 		sb.append("@NoArgsConstructor\n");
 		sb.append("@AllArgsConstructor\n");
 		sb.append("@Builder\n");
 		sb.append("@Entity\n");
+		sb.append("@Table(name=\""+StringUtil.toUnderlineCase(classe.getSimpleName()) +"\")\n");
 		sb.append("public class " + classe.getSimpleName() + " implements Serializable {\n");
 		sb.append("	\n");
 		sb.append("	private static final long serialVersionUID = 1L;");
@@ -74,67 +80,76 @@ public class JPAUtil {
 
 	@SuppressWarnings("rawtypes")
 	public static String gerarAtributos(Class classe) {
-		
+
 		Field[] fields = classe.getDeclaredFields();
-		
-		boolean contemId = false;
-		for (Field field : fields) 
-			if("id".equals(field.getName()))
-				contemId = true;
+
+		boolean contemId = !Stream.of(fields).filter(f->"id".equals(f.getName())).collect(Collectors.toList()).isEmpty();
+
 		if(!contemId)
 			throw new RuntimeException("A classe "+classe.getName()+" nao contem id.");
-		
+
 		StringBuilder sb = new StringBuilder();
-		
+
 		for (Field field : fields) {
-			
+
 			String name = field.getName();
 			String nomeColuna = JPAUtil.nomeColuna(field);
 			String anotacoes = "\t";
 			if (!"serialVersionUID".equals(name)) {
 				sb.append("\n");
-				
+
 				if(field.getType().isPrimitive())
 					throw new RuntimeException("Nao utilize tipos primitivos");
-				
+
 				if (field.getType().isEnum()) {
-					anotacoes += "@Enumerated(EnumType.STRING) @Column(length=255, nullable=false)";
+					anotacoes += "@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")\n";
+					anotacoes += "\t@Enumerated(EnumType.STRING)\n";
+					anotacoes += "\t@Column(length=255, nullable=false)";
 				} else if (field.getType() == Long.class) {
 					if ("id".equals(field.getName())){
 						String colunaId = StringUtil.toUnderlineCase( JPAUtil.gerarColunaId(classe) );
 						String unCapitalize = StringUtil.toUnderlineCase( StringUtil.uncapitalize(classe.getSimpleName() ) );
 						anotacoes += ("@Id @GeneratedValue(generator=\"seq_:name\", strategy=GenerationType.SEQUENCE) @SequenceGenerator(name=\"seq_:name\") @Column(name=\""+colunaId+"\", nullable=false) ").replace(":name", unCapitalize);
+					} else {
+						anotacoes += "@Column(name=\""+nomeColuna+"\", nullable=false)";
 					}
 				} else if (field.getType() == Date.class || field.getType() == LocalDate.class) {
+					anotacoes += "\t@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")";
 					anotacoes += "@JsonFormat(pattern=\"dd/MM/yyyy\")\n";
 					anotacoes += "\t@Temporal(TemporalType.DATE) \n";
-<<<<<<< HEAD
 					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
 				} else if (field.getType() == LocalDateTime.class) {
+					anotacoes += "\t@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")";
 					anotacoes += "\t@JsonFormat(pattern=\"dd/MM/yyyy HH:mm\")\n";
 					anotacoes += "\t@Temporal(TemporalType.TIMESTAMP) \n";
 					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
-=======
-					anotacoes += "\t@Column(name=\""+nomeColuna+"\", nullable=false)";
->>>>>>> f54e367599603f4e44244baf6a2a81905ccfe442
 				} else if (field.getType() == String.class) {
-					anotacoes += "@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
+					anotacoes += "@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")\n";
+					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
 				} else if (field.getType() == Integer.class) {
-					anotacoes += "@Column(name=\""+nomeColuna+"\", nullable=true)";
+					anotacoes += "@NotEmpty @Column(name=\""+nomeColuna+"\", nullable=true)";
 				} else if (field.getType() == Float.class) {
+					anotacoes += "@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")";
 					anotacoes += "@Column(name=\""+nomeColuna+"\", precision=10, scale=2, nullable=false)";
 				} else if (field.getType() == BigDecimal.class) {
+					anotacoes += "@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")";
 					anotacoes += "@Column(name=\""+nomeColuna+"\", precision=10, scale=2, nullable=false)";
 				} else if (field.getType() == Double.class) {
+					anotacoes += "@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")";
 					anotacoes += "@Column(name=\""+nomeColuna+"\", precision=10, scale=2, nullable=false)";
 				} else if (field.getType() == Boolean.class) {
+					anotacoes += "@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")";
 					anotacoes += "@Column(name=\""+nomeColuna+"\", length=1, nullable=false)";
 				} else if (field.getType() == List.class || field.getType() == Set.class) {
 					Class genericType = (Class) ReflectionUtils.getGenericType(field);
 					Field[] f = ReflectionUtils.getAttributesOffType(genericType, classe);
-					if(f.length==1)
-					anotacoes += "@OneToMany(mappedBy=\""+(f[0]).getName()+"\")";
-					
+					boolean isMappedBy = f.length == 1;
+					if(isMappedBy) {
+						anotacoes += "@OneToMany(mappedBy=\""+(f[0]).getName()+"\")";
+					} else {
+						anotacoes += "//@ManyToMany()";
+					}
+
 				} else if (!"java".startsWith(field.getType().getName())) {
 					boolean isEntity = JPAUtil.isEntity(field);
 					if(isEntity){
@@ -165,7 +180,7 @@ public class JPAUtil {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Retorna o atributo de nome "id".
 	 * @param field
@@ -206,13 +221,13 @@ public class JPAUtil {
 				dto.setInsertable(column.insertable());
 			}
 		}
-		
+
 		annotation = ReflectionUtils.getAnnotation(classe, field, Id.class);
 		if(annotation != null) {
 			Id id = (Id) annotation;
 			dto.setPk(true);
 		}
-		
+
 		return dto;
 	}
 }
