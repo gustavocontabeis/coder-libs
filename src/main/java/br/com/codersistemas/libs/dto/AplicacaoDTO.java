@@ -1,5 +1,6 @@
 package br.com.codersistemas.libs.dto;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -18,26 +19,25 @@ public class AplicacaoDTO {
 	private String nome, pacoteBackend;
 	private List<EntidadeDTO> entidades;
 	
-	public AplicacaoDTO() {
-		
-	}
-	
 	public AplicacaoDTO(String nomeAplicacao, Class<?>... classes) {
-		this.setNome(nomeAplicacao);
-		this.setEntidades(new ArrayList<EntidadeDTO>());
+		
+		nome = nomeAplicacao;
+		entidades = new ArrayList<EntidadeDTO>();
 
 		for (Class<?> classe : classes) {
 
 			EntidadeDTO entidade = new EntidadeDTO();
+			entidade.setClasse(classe);
 			entidade.setAtributos(new ArrayList<>());
 			entidade.setNome(classe.getSimpleName());
 			entidade.setNomeClasse(classe.getName());
 			entidade.setNomeInstancia(StringUtil.uncapitalize(classe.getSimpleName()));
+			entidade.setNomeCapitalizado(classe.getSimpleName());
 			entidade.setRotulo(StringUtil.label(classe.getSimpleName()));
 			entidade.setTabela(StringUtil.toUnderlineCase(classe.getSimpleName()).toLowerCase());
 			entidade.setAplicacao(this);
 			entidade.setRestURI("/" + StringUtil.uncaplitalizePlural(entidade.getTabela().replace("_", "-")));
-			this.getEntidades().add(entidade);
+			getEntidades().add(entidade);
 
 			Field[] fields = ReflectionUtils.getFields(classe);
 			for (Field field : fields) {
@@ -59,10 +59,20 @@ public class AplicacaoDTO {
 				atributo.setNomeInstancia(StringUtil.uncapitalize(field.getName()));
 				atributo.setNomeLista(StringUtil.uncaplitalizePlural(field.getName()));
 				atributo.setRotulo(StringUtil.label(field.getName()));
+				atributo.setClasse(field.getType());
 				atributo.setCollection(field.getType().isArray() || field.getType() == List.class
 						|| field.getType() == Set.class || field.getType() == Map.class);
 				atributo.setFk((!atributo.getTipoClasse().startsWith("java.") && !atributo.isEnum())
 						|| atributo.isCollection());
+				if(atributo.isFk() && !atributo.isCollection()) {
+					Field[] fields2 = ReflectionUtils.getFields(field.getType());
+					for (Field field2 : fields2) {
+						Annotation annotation = ReflectionUtils.getAnnotation(field.getType(), field2, br.com.codersistemas.libs.annotations.ToString.class);
+						if(annotation != null) {
+							atributo.setFkField(atributo.getNomeInstancia()+"."+field2.getName());
+						}
+					}
+				}
 				ColumnDTO columnDTO = JPAUtil.getDto(classe, field);
 
 				if (StringUtil.isNotBlank(columnDTO.getName())) {
@@ -99,6 +109,7 @@ public class AplicacaoDTO {
 
 				entidade.getAtributos().add(atributo);
 			}
+
 		}
 
 	}

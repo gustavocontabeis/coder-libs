@@ -22,7 +22,10 @@ public class AtributoDTO {
 	private int tamanho;
 	private int precisao;
 	private boolean fk;
+	private String fkField;
 	private boolean pk;
 	private String[] enumaracao;
 	private EntidadeDTO entidade;
+	private Class classe;
+	
 }

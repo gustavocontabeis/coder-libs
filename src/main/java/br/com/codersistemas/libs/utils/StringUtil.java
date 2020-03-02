@@ -60,13 +60,13 @@ public class StringUtil extends StringUtils {
 	}
 
 	private static String plural(String name) {
-		
-		if(name.endsWith("cao")) {
-			name = StringUtils.replace(name, "cao", "coes");
-		} else {
-			name = name + "s";
+		if(!name.toLowerCase().endsWith("s")) {
+			if(name.endsWith("cao")) {
+				name = StringUtils.replace(name, "cao", "coes");
+			} else {
+				name = name + "s";
+			}			
 		}
-		
 		return name;
 	}
 

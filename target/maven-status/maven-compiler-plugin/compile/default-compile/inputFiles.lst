@@ -9,6 +9,10 @@
 /home/gustavo/dev/workspace-coder/coder-libs/src/main/java/br/com/codersistemas/libs/dto/MudancaConteudoDTO.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/main/java/br/com/codersistemas/libs/exceptions/ReflectionUtilsException.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/main/java/br/com/codersistemas/libs/utils/DateUtils.java
+/home/gustavo/dev/workspace-coder/coder-libs/src/main/java/br/com/codersistemas/libs/dto/ColumnDTO.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/main/java/br/com/codersistemas/libs/utils/StringUtil.java
+/home/gustavo/dev/workspace-coder/coder-libs/src/main/java/br/com/codersistemas/libs/dto/AplicacaoDTO.java
+/home/gustavo/dev/workspace-coder/coder-libs/src/main/java/br/com/codersistemas/libs/annotations/ToString.java
+/home/gustavo/dev/workspace-coder/coder-libs/src/main/java/br/com/codersistemas/libs/dto/EntidadeDTO.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/main/java/br/com/codersistemas/libs/utils/FileUtil.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/main/java/br/com/codersistemas/libs/utils/ReflectionUtils.java

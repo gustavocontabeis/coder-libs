@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-sources>
+	<data-source id="postgres-jdbc-170224bb254-2254e53f72ceb45a" provider="postgresql" driver="postgres-jdbc" name="bd_coder_gem_api" save-password="true" read-only="false">
+		<connection host="localhost" port="5432" server="" database="bd_coder_gem_api" url="jdbc:postgresql://localhost:5432/bd_coder_gem_api" user="usr_coder_gem_api" password="AxMCH0JMQBMXLQE7GilERi935A==" type="dev">
+			<provider-property name="@dbeaver-show-non-default-db@" value="false"/>
+			<provider-property name="@dbeaver-show-template-db@" value="false"/>
+		</connection>
+	</data-source>
+	<filters/>
+</data-sources>
