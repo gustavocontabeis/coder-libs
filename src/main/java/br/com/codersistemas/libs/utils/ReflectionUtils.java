@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package br.com.codersistemas.libs.utils;
 
@@ -75,7 +75,7 @@ public class ReflectionUtils {
 
 	/**
 	 * Retorna o Field mesmo com herança
-	 * 
+	 *
 	 * @param obj
 	 *            obj
 	 * @param nome
@@ -209,7 +209,7 @@ public class ReflectionUtils {
 
 	/**
 	 * id - getId, nome - getNome
-	 * 
+	 *
 	 * @param name
 	 *            name
 	 * @return String String
@@ -232,7 +232,7 @@ public class ReflectionUtils {
 
 	/**
 	 * id - setId, nome - setNome
-	 * 
+	 *
 	 * @param name
 	 *            name
 	 * @return String String
@@ -570,7 +570,7 @@ public class ReflectionUtils {
 	}
 
 	public static String printCreateObjectCode(Object instance, String var) throws Exception {
-		
+
 		StringBuilder sb = new StringBuilder();
 		BeanInfo beanInfo = Introspector.getBeanInfo(instance.getClass());
 
@@ -591,10 +591,10 @@ public class ReflectionUtils {
 			System.out.print(");");
 			System.out.println("");
 		}
-		
+
 		return sb.toString();
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	public static Type getGenericType(Field field) {
 		Type genericFieldType = field.getGenericType();
@@ -656,7 +656,7 @@ public class ReflectionUtils {
 		Type type = field.getGenericType();
 		return type instanceof ParameterizedType;
 	}
-	
+
 	public static boolean isGenericType(Method method) {
 		Type returnType = method.getGenericReturnType();
 
@@ -670,11 +670,11 @@ public class ReflectionUtils {
 		}
 		return false;
 	}
-	
+
 
 	/**
 	 * Retorna o tipo com generics se nescessario.
-	 * 
+	 *
 	 * @param field
 	 * @return String
 	 */
@@ -689,21 +689,21 @@ public class ReflectionUtils {
 	}
 
 	public static List<AtributoDTO> getAtributos(Class classe) {
-		
+
 		List<AtributoDTO> atributos = new ArrayList<>();
-		
+
 		String classeInstancia = StringUtil.uncapitalize(classe.getSimpleName());
-		
+
 		Field[] fields = getFields(classe);
-		
+
 		for (Field field : fields) {
-			
+
 			String name = field.getName();
 			//System.out.println(name);
 			if (!"serialVersionUID".equals(name)) {
-			
+
 				Column column = (Column) ReflectionUtils.getAnnotation(classe, field, Column.class);
-				
+
 				AtributoDTO atributo = new AtributoDTO();
 				atributo.setNome(field.getName());
 				atributo.setEntidade(new EntidadeDTO());
@@ -713,16 +713,17 @@ public class ReflectionUtils {
 				atributo.setRotulo(StringUtil.label(field.getName()) );
 				atributo.setTamanho(column != null ? column.length() : 0);
 				atributo.setTipoClasse(field.getType().getName());
+				atributo.setClasse(field.getType());
 				atributos.add(atributo);
-				
+
 				if(field.getType().isPrimitive())
 					throw new RuntimeException("N�o utilize tipos primitivos");
-				
+
 				if (field.getType().isEnum()) {
 					Class classeEnum = field.getType();
 					Object[] enumConstants = classeEnum.getEnumConstants();
 					String[] enumConstantsStrings  = new String[enumConstants.length];
-					for (int i = 0; i < enumConstants.length; i++) 
+					for (int i = 0; i < enumConstants.length; i++)
 						enumConstantsStrings[i] = Arrays.asList(classeEnum.getEnumConstants()).get(i).toString();
 					atributo.setEnumaracao(enumConstantsStrings);
 				} else if (field.getType() == Long.class) {
@@ -751,7 +752,7 @@ public class ReflectionUtils {
 					Field[] f = ReflectionUtils.getAttributesOffType(genericType, classe);
 					//if(f.length==1)
 					//anotacoes += "@OneToMany(mappedBy=\""+(f[0]).getName()+"\")";
-					
+
 				} else if (!"java".startsWith(field.getType().getName())) {
 					boolean isEntity = JPAUtil.isEntity(field);
 					if(isEntity){
@@ -769,18 +770,18 @@ public class ReflectionUtils {
 	}
 
 	private static String nomeColuna(Class classe, Field field) {
-		
+
 		Column column = (Column) getAnnotation(classe, field, Column.class);
 		if(column != null) {
 			return column.name();
 		}
-		
+
 		JoinColumn joinColumn = (JoinColumn) getAnnotation(classe, field, Column.class);
 		if(joinColumn != null) {
 			return joinColumn.name();
 		}
-		
-		return JPAUtil.nomeColuna(field); 
+
+		return JPAUtil.nomeColuna(field);
 	}
 
 	public static Object newInstance(Class classe) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {

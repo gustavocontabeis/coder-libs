@@ -94,6 +94,7 @@ public class JPAUtil {
 
 			String name = field.getName();
 			String nomeColuna = JPAUtil.nomeColuna(field);
+			String label = StringUtil.label(name);
 			String anotacoes = "\t";
 			if (!"serialVersionUID".equals(name)) {
 				sb.append("\n");
@@ -102,7 +103,7 @@ public class JPAUtil {
 					throw new RuntimeException("Nao utilize tipos primitivos");
 
 				if (field.getType().isEnum()) {
-					anotacoes += "@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")\n";
+					anotacoes += "@NotNull(message = \""+label+" deve ser preenchido.\")\n";
 					anotacoes += "\t@Enumerated(EnumType.STRING)\n";
 					anotacoes += "\t@Column(length=255, nullable=false)";
 				} else if (field.getType() == Long.class) {
@@ -114,32 +115,32 @@ public class JPAUtil {
 						anotacoes += "@Column(name=\""+nomeColuna+"\", nullable=false)";
 					}
 				} else if (field.getType() == Date.class || field.getType() == LocalDate.class) {
-					anotacoes += "\t@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")";
-					anotacoes += "@JsonFormat(pattern=\"dd/MM/yyyy\")\n";
+					anotacoes += "\n@NotNull(message = \""+label+" deve ser preenchido.\")\n ";
+					anotacoes += "\t@JsonFormat(pattern=\"dd/MM/yyyy\")\n";
 					anotacoes += "\t@Temporal(TemporalType.DATE) \n";
 					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
 				} else if (field.getType() == LocalDateTime.class) {
-					anotacoes += "\t@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")";
+					anotacoes += "\t@NotNull(message = \""+label+" deve ser preenchido.\")";
 					anotacoes += "\t@JsonFormat(pattern=\"dd/MM/yyyy HH:mm\")\n";
 					anotacoes += "\t@Temporal(TemporalType.TIMESTAMP) \n";
 					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
 				} else if (field.getType() == String.class) {
-					anotacoes += "@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")\n";
+					anotacoes += "@NotNull(message = \""+label+" deve ser preenchido.\")\n";
 					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
 				} else if (field.getType() == Integer.class) {
-					anotacoes += "@NotEmpty @Column(name=\""+nomeColuna+"\", nullable=true)";
+					anotacoes += "@NotEmpty @Column(name=\""+label+"\", nullable=true)";
 				} else if (field.getType() == Float.class) {
-					anotacoes += "@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")";
+					anotacoes += "@NotNull(message = \""+label+" deve ser preenchido.\")";
 					anotacoes += "@Column(name=\""+nomeColuna+"\", precision=10, scale=2, nullable=false)";
 				} else if (field.getType() == BigDecimal.class) {
-					anotacoes += "@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")";
+					anotacoes += "@NotNull(message = \""+label+" deve ser preenchido.\")";
 					anotacoes += "@Column(name=\""+nomeColuna+"\", precision=10, scale=2, nullable=false)";
 				} else if (field.getType() == Double.class) {
-					anotacoes += "@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")";
+					anotacoes += "@NotNull(message = \""+label+" deve ser preenchido.\")";
 					anotacoes += "@Column(name=\""+nomeColuna+"\", precision=10, scale=2, nullable=false)";
 				} else if (field.getType() == Boolean.class) {
-					anotacoes += "@NotNull(message = \""+nomeColuna+" deve ser preenchido.\")";
-					anotacoes += "@Column(name=\""+nomeColuna+"\", length=1, nullable=false)";
+					anotacoes += "@NotNull(message = \""+label+" deve ser preenchido.\") \n";
+					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=1, nullable=false)";
 				} else if (field.getType() == List.class || field.getType() == Set.class) {
 					Class genericType = (Class) ReflectionUtils.getGenericType(field);
 					Field[] f = ReflectionUtils.getAttributesOffType(genericType, classe);
