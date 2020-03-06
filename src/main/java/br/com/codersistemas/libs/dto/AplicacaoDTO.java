@@ -57,6 +57,7 @@ public class AplicacaoDTO {
 				atributo.setTipoClasse(field.getType().getName());
 				atributo.setNome(field.getName());
 				atributo.setNomeInstancia(StringUtil.uncapitalize(field.getName()));
+				atributo.setNomeCapitalizado(StringUtil.capitalize(field.getName()));
 				atributo.setNomeLista(StringUtil.uncaplitalizePlural(field.getName()));
 				atributo.setRotulo(StringUtil.label(field.getName()));
 				atributo.setClasse(field.getType());
@@ -67,7 +68,7 @@ public class AplicacaoDTO {
 				if(atributo.isFk() && !atributo.isCollection()) {
 					Field[] fields2 = ReflectionUtils.getFields(field.getType());
 					for (Field field2 : fields2) {
-						Annotation annotation = ReflectionUtils.getAnnotation(field.getType(), field2, br.com.codersistemas.libs.annotations.ToString.class);
+						Annotation annotation = ReflectionUtils.getAnnotation(field.getType(), field2, br.com.codersistemas.libs.annotations.ClassLabelAttribute.class);
 						if(annotation != null) {
 							atributo.setFkField(atributo.getNomeInstancia()+"."+field2.getName());
 						}
