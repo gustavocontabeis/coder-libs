@@ -17,7 +17,9 @@ import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -25,6 +27,7 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
+import br.com.codersistemas.libs.annotations.ClassLabelAttribute;
 import br.com.codersistemas.libs.annotations.Label;
 import br.com.codersistemas.libs.dto.AtributoDTO;
 import br.com.codersistemas.libs.dto.EntidadeDTO;
@@ -83,16 +86,12 @@ public class ReflectionUtils {
 	 * @return field field
 	 */
 	public static Field getField(Object obj, String nome) {
-		Class classe = obj.getClass();
-		do {
-			Field[] declaredFields = classe.getDeclaredFields();
-			for (Field field : declaredFields) {
-				if (field.getName().equals(nome)) {
-					return field;
-				}
+		Field[] fields = getFields(obj);
+		for (Field field : fields) {
+			if (field.getName().equals(nome)) {
+				return field;
 			}
-			classe = classe.getSuperclass();
-		} while (classe != Object.class);
+		}
 		return null;
 	}
 
@@ -182,10 +181,16 @@ public class ReflectionUtils {
 				list.add(method);
 			}
 			classe1 = classe1.getSuperclass();
-		} while (classe1 != Object.class);
+		} while (classe1 != null && classe1 != Object.class);
 		return list.toArray(new Method[list.size()]);
 	}
 
+	/**
+	 * 
+	 * @param classe
+	 * @param field
+	 * @return
+	 */
 	public static Annotation[] getAnnotation(Class classe, Field field) {
 		List<Annotation> list = new ArrayList<Annotation>();
 		for (Annotation annotation : field.getDeclaredAnnotations()) {
@@ -222,6 +227,11 @@ public class ReflectionUtils {
 		}
 	}
 
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public static String getGeterNameBoolean(String name) {
 		if (name.length() >= 2) {
 			return "is" + name.substring(0, 1).toUpperCase() + name.substring(1);
@@ -245,6 +255,13 @@ public class ReflectionUtils {
 		}
 	}
 
+	/**
+	 * 
+	 * @param classe
+	 * @param field
+	 * @param annotationClass
+	 * @return
+	 */
 	public static Annotation getAnnotation(Class classe, Field field, Class<? extends Annotation> annotationClass) {
 		for (Annotation annotation : getAnnotation(classe, field)) {
 			if (annotation.annotationType() == annotationClass) {
@@ -254,6 +271,12 @@ public class ReflectionUtils {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param obj
+	 * @param atributo
+	 * @return
+	 */
 	public static Object getValor(Object obj, String atributo) {
 
 		Field field = getField(obj, atributo);
@@ -279,6 +302,12 @@ public class ReflectionUtils {
 		return invoke;
 	}
 
+	/**
+	 * 
+	 * @param obj1
+	 * @param obj2
+	 * @return
+	 */
 	public static MudancaConteudoDTO[] buscarDiferencas(Object obj1, Object obj2) {
 
 		List<MudancaConteudoDTO> list = new ArrayList<>();
@@ -368,11 +397,31 @@ public class ReflectionUtils {
 		return list.toArray(new MudancaConteudoDTO[list.size()]);
 	}
 
+	/**
+	 * 
+	 * @param action
+	 * @param nomeSAtributo
+	 * @param value
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
 	public static void inject(Object action, String nomeSAtributo, Object value)
 			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		setValue(action, nomeSAtributo, value);
 	}
-
+	
+	/**
+	 * 
+	 * @param action
+	 * @param nomeSAtributo
+	 * @param value
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
 	public static void setValue(Object action, String nomeSAtributo, Object value)
 			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		Field fieldGitecsPermitidas = null;
@@ -390,6 +439,17 @@ public class ReflectionUtils {
 		fieldGitecsPermitidas.set(action, value);
 	}
 
+	/**
+	 * 
+	 * @param classe
+	 * @param args
+	 * @return
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 */
 	public static <T> T setValues(Class<T> classe, Object... args) throws InstantiationException,
 			IllegalAccessException, NoSuchFieldException, SecurityException, IllegalArgumentException {
 
@@ -410,6 +470,11 @@ public class ReflectionUtils {
 		return obj;
 	}
 
+	/**
+	 * 
+	 * @param method
+	 * @return
+	 */
 	public static Class getTipoGenericoRetorno(Method method) {
 		String returnType = method.getReturnType().getSimpleName();
 		if (method.getReturnType() == List.class) {
@@ -427,6 +492,11 @@ public class ReflectionUtils {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param method
+	 * @return
+	 */
 	public static String getTipoGenericoRetornoString(Method method) {
 		String returnType = method.getReturnType().getSimpleName();
 		if (method.getReturnType() == List.class) {
@@ -444,10 +514,21 @@ public class ReflectionUtils {
 		return returnType;
 	}
 
+	/**
+	 * 
+	 * @param method
+	 * @return
+	 */
 	public static boolean getContemRetorno(Method method) {
 		return method.getGenericReturnType() != void.class;
 	}
 
+	/**
+	 * 
+	 * @param obj
+	 * @param atributo
+	 * @return
+	 */
 	public static Object getValorLiteral(Object obj, String atributo) {
 		Object valor = getValor(obj, atributo);
 
@@ -495,6 +576,16 @@ public class ReflectionUtils {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param obj1
+	 * @return
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 */
 	public static <T> T clone(T obj1) throws InstantiationException, IllegalAccessException, NoSuchFieldException,
 			SecurityException, IllegalArgumentException {
 		T obj2 = (T) obj1.getClass().newInstance();
@@ -504,6 +595,11 @@ public class ReflectionUtils {
 		return obj2;
 	}
 
+	/**
+	 * 
+	 * @param obj1
+	 * @return
+	 */
 	public static String toString(Object obj1) {
 		Field[] fields = getFields(obj1.getClass());
 
@@ -532,6 +628,12 @@ public class ReflectionUtils {
 		return sb.toString();
 	}
 
+	/**
+	 * 
+	 * @param obj1
+	 * @param ignores
+	 * @return
+	 */
 	public static Object toStringNotNulls(Object obj1, String... ignores) {
 
 		Field[] fields = getFields(obj1.getClass());
@@ -569,6 +671,13 @@ public class ReflectionUtils {
 		return sb.toString();
 	}
 
+	/**
+	 * 
+	 * @param instance
+	 * @param var
+	 * @return
+	 * @throws Exception
+	 */
 	public static String printCreateObjectCode(Object instance, String var) throws Exception {
 
 		StringBuilder sb = new StringBuilder();
@@ -595,6 +704,11 @@ public class ReflectionUtils {
 		return sb.toString();
 	}
 
+	/**
+	 * 
+	 * @param field
+	 * @return
+	 */
 	@SuppressWarnings("rawtypes")
 	public static Type getGenericType(Field field) {
 		Type genericFieldType = field.getGenericType();
@@ -609,6 +723,12 @@ public class ReflectionUtils {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param classe
+	 * @param type
+	 * @return
+	 */
 	public static Field[] getAttributesOffType(Class classe, Class type) {
 		List<Field>fields = new ArrayList<Field>();
 		for (Field field : classe.getDeclaredFields()) {
@@ -620,10 +740,21 @@ public class ReflectionUtils {
 		return fields.toArray(array);
 	}
 
+	/**
+	 * 
+	 * @param field
+	 * @return
+	 */
 	@SuppressWarnings("rawtypes")
 	private static String getTipo(Field field) {
 		return field.getType().getSimpleName() + (isGenericType(field) ? "<" + ((Class) getGenericType(field)).getSimpleName() + ">" : "");
 	}
+
+	/**
+	 * 
+	 * @param field
+	 * @return
+	 */
 	@SuppressWarnings("rawtypes")
 	public static Type getGenericType2(Field field) {
 		Type genericFieldType = field.getGenericType();
@@ -638,6 +769,11 @@ public class ReflectionUtils {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param method
+	 * @return
+	 */
 	public static Type getGenericType(Method method) {
 		Type returnType = method.getGenericReturnType();
 
@@ -652,11 +788,21 @@ public class ReflectionUtils {
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param field
+	 * @return
+	 */
 	public static boolean isGenericType(Field field) {
 		Type type = field.getGenericType();
 		return type instanceof ParameterizedType;
 	}
 
+	/**
+	 * 
+	 * @param method
+	 * @return
+	 */
 	public static boolean isGenericType(Method method) {
 		Type returnType = method.getGenericReturnType();
 
@@ -671,7 +817,6 @@ public class ReflectionUtils {
 		return false;
 	}
 
-
 	/**
 	 * Retorna o tipo com generics se nescessario.
 	 *
@@ -683,11 +828,20 @@ public class ReflectionUtils {
 		return field.getType().getSimpleName() + (isGenericType(field) ? "<" + ((Class) getGenericType(field)).getSimpleName() + ">" : "");
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public static Object createObjectWithValues() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param classe
+	 * @return
+	 */
 	public static List<AtributoDTO> getAtributos(Class classe) {
 
 		List<AtributoDTO> atributos = new ArrayList<>();
@@ -769,6 +923,12 @@ public class ReflectionUtils {
 		return atributos;
 	}
 
+	/**
+	 * 
+	 * @param classe
+	 * @param field
+	 * @return
+	 */
 	private static String nomeColuna(Class classe, Field field) {
 
 		Column column = (Column) getAnnotation(classe, field, Column.class);
@@ -784,6 +944,15 @@ public class ReflectionUtils {
 		return JPAUtil.nomeColuna(field);
 	}
 
+	/**
+	 * 
+	 * @param classe
+	 * @return
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public static Object newInstance(Class classe) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Constructor[] constructors = classe.getConstructors();
 		for (Constructor constructor : constructors) {
@@ -792,6 +961,63 @@ public class ReflectionUtils {
 			}
 		}
 		return null;
+	}
+	
+	
+
+	/**
+	 * Limpa atributos FK deixando somente valores anotados com @Id e @ClassLabelAttribute
+	 * @param obj
+	 */
+	public static void mapToBasicDTO(Object obj) {
+		Field[] fields = getFields(obj);
+		for (Field field : fields) {
+			Class classe = (Class) field.getType();
+			if(!isFk(classe) && !classe.isEnum() && !isCollection(classe)) {
+				Object valor = getValor(obj, field.getName());
+				clearAtributesDTO(valor);
+			} else if(isCollection(classe) && isGenericType(field)) {
+				Type genericType = getGenericType(field);
+				Class classType = (Class) genericType; 
+				Collection valor = (Collection) getValor(obj, field.getName());
+				if(valor != null) {
+					Iterator iterator = valor.iterator();
+					while (iterator.hasNext()) {
+						Object object = (Object) iterator.next();
+						clearAtributesDTO(object);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param classe
+	 * @return
+	 */
+	public static boolean isCollection(Class classe) {
+		return Collection.class.isAssignableFrom(classe);
+	}
+
+	private static void clearAtributesDTO(Object valor) {
+		Field[] fields = getFields(valor);
+		for (Field field : fields) {
+			Class classe = (Class) field.getType();
+			Annotation annotationId = getAnnotation(classe, field, Id.class);
+			Annotation annotationClassLabelAttribute = getAnnotation(classe, field, ClassLabelAttribute.class);
+			if(annotationId == null && annotationClassLabelAttribute == null) {
+				try {
+					setValue(valor, field.getName(), null);
+				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	private static boolean isFk(Class classe) {
+		return classe.getName().startsWith("java.");
 	}
 
 }

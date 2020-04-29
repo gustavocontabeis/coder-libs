@@ -382,5 +382,51 @@ public class ReflectionUtilsTest {
 		}
 	}
 
-	
+	@Test
+	public void testMapToBasicDTO() throws Exception {
+		
+		PessoaEntity romilda = PessoaEntity.builder()
+		.altura(999.45F)
+		.ativo(true)
+		.dataDeNacimento(new Date())
+		.filhos(Arrays.asList(new PessoaEntity[0]))
+		.genero(Genero.FEMININO)
+		.id(1L)
+		.mae(PessoaEntity.builder().id(2L).build())
+		.nome("Romilda Leci da Siva")
+		.salario(123.456789)
+		.build();
+		
+		PessoaEntity arthur = PessoaEntity.builder()
+		.altura(999.45F)
+		.ativo(true)
+		.dataDeNacimento(new Date())
+		.filhos(Arrays.asList(new PessoaEntity[0]))
+		.genero(Genero.MASCULINO)
+		.id(2L)
+		.mae(null)
+		.nome("Arthur da Siva Maia")
+		.salario(123.456789)
+		.build();
+		
+		PessoaEntity giana = PessoaEntity.builder()
+		.altura(999.45F)
+		.ativo(true)
+		.dataDeNacimento(new Date())
+		.filhos(Arrays.asList(new PessoaEntity[] {arthur}))
+		.genero(Genero.FEMININO)
+		.id(3L)
+		.mae(romilda)
+		.nome("Giana da Siva")
+		.salario(123.456789)
+		.build();
+		
+		arthur.setMae(giana);
+		
+		//System.out.println(giana);
+		ReflectionUtils.mapToBasicDTO(giana);
+		//System.out.println(giana);
+		
+	}
+
 }

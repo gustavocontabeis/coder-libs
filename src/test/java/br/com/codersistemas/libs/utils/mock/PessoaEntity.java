@@ -19,6 +19,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.codersistemas.libs.annotations.ClassLabelAttribute;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,6 +37,7 @@ public class PessoaEntity implements Serializable {
 	@Id @GeneratedValue(generator="seq_pessoa", strategy=GenerationType.SEQUENCE) @SequenceGenerator(name="seq_pessoa") @Column(name="id_pessoa", nullable=false) 
 	private Long id;
 
+	@ClassLabelAttribute
 	@Column(name="nome", length=255, nullable=false)
 	private String nome;
 

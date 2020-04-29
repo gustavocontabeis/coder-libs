@@ -110,7 +110,7 @@ public class JPAUtil {
 					if ("id".equals(field.getName())){
 						String colunaId = StringUtil.toUnderlineCase( JPAUtil.gerarColunaId(classe) );
 						String unCapitalize = StringUtil.toUnderlineCase( StringUtil.uncapitalize(classe.getSimpleName() ) );
-						anotacoes += ("@Id @GeneratedValue(generator=\"seq_:name\", strategy=GenerationType.SEQUENCE) @SequenceGenerator(name=\"seq_:name\") @Column(name=\""+colunaId+"\", nullable=false) ").replace(":name", unCapitalize);
+						anotacoes += ("@Id @GeneratedValue(generator=\"seq_:name\", strategy=GenerationType.SEQUENCE) @SequenceGenerator(name=\"seq_:name\", initialValue=1000, allocationSize=1) @Column(name=\""+colunaId+"\", nullable=false) ").replace(":name", unCapitalize);
 					} else {
 						anotacoes += "@Column(name=\""+nomeColuna+"\", nullable=false)";
 					}
