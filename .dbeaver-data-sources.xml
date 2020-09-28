@@ -6,5 +6,55 @@
 			<provider-property name="@dbeaver-show-template-db@" value="false"/>
 		</connection>
 	</data-source>
+	<data-source id="postgres-jdbc-170fee00d2d-142439c39e63032d" provider="postgresql" driver="postgres-jdbc" name="bd_catalogo_musical_api" save-password="true" read-only="false">
+		<connection host="localhost" port="5432" server="" database="bd_catalogo_musical_api" url="jdbc:postgresql://localhost:5432/bd_catalogo_musical_api" user="usr_catalogo_musical_api" password="AxMCH0JCUBcJHQExKBtQRS8UBEl7RVMvRsY=" type="dev">
+			<provider-property name="@dbeaver-show-non-default-db@" value="false"/>
+			<provider-property name="@dbeaver-show-template-db@" value="false"/>
+		</connection>
+	</data-source>
+	<data-source id="postgres-jdbc-17184382550-1f1cb8e77b6b098b" provider="postgresql" driver="postgres-jdbc" name="codersistemas.com.br - Postgres" save-password="true" read-only="false">
+		<connection host="codersistemas.com.br" port="5432" server="" database="postgres" url="jdbc:postgresql://codersistemas.com.br:5432/postgres" user="postgres" password="SgtUN0QQEAQRSlF4VFUBFUb2" type="dev">
+			<property name="connectTimeout" value="20"/>
+			<property name="loginTimeout" value="20"/>
+			<provider-property name="@dbeaver-show-non-default-db@" value="true"/>
+			<provider-property name="@dbeaver-show-template-db@" value="false"/>
+			<network-handler type="PROXY" id="socks_proxy" enabled="false" save-password="true">
+				<property name="socks-port" value="1080"/>
+			</network-handler>
+			<network-handler type="TUNNEL" id="ssh_tunnel" enabled="true" save-password="true" user="coder1" password="EAsCJVMSVUQSQQNe9g==">
+				<property name="sshConnectTimeout" value="10000"/>
+				<property name="port" value="22"/>
+				<property name="keyPath" value="/home/gustavo/.ssh/id_rsa"/>
+				<property name="implementation" value="jsch"/>
+				<property name="host" value="codersistemas.com.br"/>
+				<property name="authType" value="PUBLIC_KEY"/>
+			</network-handler>
+			<network-handler type="CONFIG" id="postgre_ssl" enabled="false" save-password="true"/>
+		</connection>
+	</data-source>
+	<data-source id="postgres-jdbc-172d6d50700-7df0d4ac8dda128f" provider="postgresql" driver="postgres-jdbc" name="PostgreSQL - docker - 0.0.0.0" save-password="true" read-only="false">
+		<connection host="0.0.0.0" port="5432" server="" database="postgres" url="jdbc:postgresql://0.0.0.0:5432/postgres" user="postgres" password="AxMCH0JMQBMXLQQyGBEltw==" type="dev">
+			<provider-property name="@dbeaver-show-non-default-db@" value="false"/>
+			<provider-property name="@dbeaver-show-template-db@" value="false"/>
+		</connection>
+	</data-source>
+	<data-source id="postgres-jdbc-17311ea8b3f-6f288975fcef1b1f" provider="postgresql" driver="postgres-jdbc" name="PostgreSQL - docker - IP" save-password="true" read-only="false">
+		<connection host="172.18.0.2" port="5432" server="" database="postgres" url="jdbc:postgresql://172.18.0.2:5432/postgres" user="postgres" password="AxMCH0JMQBMXLQQyGBEltw==" type="dev">
+			<provider-property name="@dbeaver-show-non-default-db@" value="false"/>
+			<provider-property name="@dbeaver-show-template-db@" value="false"/>
+		</connection>
+	</data-source>
+	<data-source id="postgres-jdbc-1733589a231-46573c4dff71c274" provider="postgresql" driver="postgres-jdbc" name="coder-blog-bd-usr" save-password="true" read-only="false">
+		<connection host="0.0.0.0" port="5432" server="" database="coder-blog-bd" url="jdbc:postgresql://0.0.0.0:5432/coder-blog-bd" user="coder-blog-usr" password="AwsVNEZRQQVUQFVe9g==" type="dev">
+			<provider-property name="@dbeaver-show-non-default-db@" value="false"/>
+			<provider-property name="@dbeaver-show-template-db@" value="false"/>
+		</connection>
+	</data-source>
+	<data-source id="postgres-jdbc-173cbc49da8-4aa5119ddd25bdee" provider="postgresql" driver="postgres-jdbc" name="PostgreSQL - postgres" save-password="true" read-only="false">
+		<connection host="localhost" port="5432" server="" database="postgres" url="jdbc:postgresql://localhost:5432/postgres" user="postgres" password="QhVUNxJGJPc=" type="dev">
+			<provider-property name="@dbeaver-show-non-default-db@" value="false"/>
+			<provider-property name="@dbeaver-show-template-db@" value="false"/>
+		</connection>
+	</data-source>
 	<filters/>
 </data-sources>

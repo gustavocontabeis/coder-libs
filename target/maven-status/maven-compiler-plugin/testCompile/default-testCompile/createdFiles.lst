@@ -1,0 +1,13 @@
+br/com/codersistemas/libs/utils/ReflectionUtilsTest.class
+br/com/codersistemas/libs/utils/mock/Carro$CarroBuilder.class
+br/com/codersistemas/libs/utils/mock/Carro.class
+br/com/codersistemas/libs/utils/mock/Pessoa.class
+br/com/codersistemas/libs/utils/mock/Genero.class
+br/com/codersistemas/libs/utils/mock/Tipos.class
+br/com/codersistemas/libs/utils/mock/Funcionario$FuncionarioBuilder.class
+br/com/codersistemas/libs/utils/mock/PessoaEntity.class
+br/com/codersistemas/libs/utils/StringUtilTest.class
+br/com/codersistemas/libs/utils/mock/MeuEnum.class
+br/com/codersistemas/libs/utils/mock/Funcionario.class
+br/com/codersistemas/libs/utils/mock/PessoaEntity$PessoaEntityBuilder.class
+br/com/codersistemas/libs/utils/mock/Pessoa$PessoaBuilder.class

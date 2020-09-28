@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -575,7 +574,7 @@ public class DateUtils {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 		return sdf.format(date);
 	}
-
+	
 	public static Date inicioDaDataInformada(Date date) {
 		Calendar cal = juntarHoraMinutoComData(date, 0, 0, 0);
 		cal.set(Calendar.MILLISECOND, 1);
@@ -859,5 +858,5 @@ public class DateUtils {
 		
 		return null;
 	}
-	
+
 }

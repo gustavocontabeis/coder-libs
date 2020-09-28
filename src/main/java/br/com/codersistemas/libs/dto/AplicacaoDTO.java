@@ -41,6 +41,9 @@ public class AplicacaoDTO {
 
 			Field[] fields = ReflectionUtils.getFields(classe);
 			for (Field field : fields) {
+				if(field.getType().isPrimitive()) {
+					throw new RuntimeException("Field \""+ field.getName()+"\" from class \""+classe.getSimpleName()+"\" is primitive.");
+				}
 				AtributoDTO atributo = new AtributoDTO();
 				if (field.getType().isEnum()) {
 					List<String> enumValues = new ArrayList<>();
