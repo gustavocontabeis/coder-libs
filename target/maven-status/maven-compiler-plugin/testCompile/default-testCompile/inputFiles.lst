@@ -5,5 +5,6 @@
 /home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/StringUtilTest.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/mock/MeuEnum.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/mock/Tipos.java
+/home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/DateUtilsTest.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/ReflectionUtilsTest.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/mock/Funcionario.java

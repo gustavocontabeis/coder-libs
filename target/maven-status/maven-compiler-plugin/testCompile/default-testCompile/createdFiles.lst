@@ -3,6 +3,7 @@ br/com/codersistemas/libs/utils/mock/Carro$CarroBuilder.class
 br/com/codersistemas/libs/utils/mock/Carro.class
 br/com/codersistemas/libs/utils/mock/Pessoa.class
 br/com/codersistemas/libs/utils/mock/Genero.class
+br/com/codersistemas/libs/utils/DateUtilsTest.class
 br/com/codersistemas/libs/utils/mock/Tipos.class
 br/com/codersistemas/libs/utils/mock/Funcionario$FuncionarioBuilder.class
 br/com/codersistemas/libs/utils/mock/PessoaEntity.class
