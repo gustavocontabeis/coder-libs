@@ -1003,6 +1003,12 @@ public class ReflectionUtils {
 	private static void clearAtributesDTO(Object valor) {
 		Field[] fields = getFields(valor);
 		for (Field field : fields) {
+			if(field.getName().contains("$")) {
+				continue;
+			}
+			if (java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
+		        System.out.println("");
+		    }
 			Class classe = (Class) field.getType();
 			Annotation annotationId = getAnnotation(classe, field, Id.class);
 			Annotation annotationClassLabelAttribute = getAnnotation(classe, field, ClassLabelAttribute.class);
