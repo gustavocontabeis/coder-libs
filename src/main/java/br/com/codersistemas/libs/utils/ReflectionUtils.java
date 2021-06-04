@@ -678,12 +678,14 @@ public class ReflectionUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String printCreateObjectCode(Object instance, String var) throws Exception {
+	public static String printCreateObjectCode(Object instance) throws Exception {
 
 		StringBuilder sb = new StringBuilder();
 		BeanInfo beanInfo = Introspector.getBeanInfo(instance.getClass());
 
 		BeanDescriptor bd = beanInfo.getBeanDescriptor();
+		String var = StringUtil.uncapitalize(bd.getName());
+		
 		System.out.print(bd.getName());
 		System.out.print(" ");
 		System.out.print(var);

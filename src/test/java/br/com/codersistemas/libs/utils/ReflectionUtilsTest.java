@@ -369,8 +369,8 @@ public class ReflectionUtilsTest {
 	
 	@Test
 	public void testPrintCreateObjectCode() throws Exception {
-		Pessoa obj1 = Pessoa.builder().altura(1.7f).ativo(true).filhos(new ArrayList<Pessoa>()).genero(Genero.MASCULINO).id(1L).mae(null).nome("Pessoa 1").salario(1000.0).build();
-		String printCreateObjectCode = ReflectionUtils.printCreateObjectCode(obj1, "obj1");
+		Pessoa obj1 = Pessoa.builder().altura(1.7f).ativo(true).filhos(new ArrayList<Pessoa>()).genero(Genero.FEMININO).id(1L).mae(null).nome("Pessoa 1").salario(1000.0).build();
+		String printCreateObjectCode = ReflectionUtils.printCreateObjectCode(obj1);
 		"Pessoa obj1 = Pessoa.builder().altura(1.7f).ativo(true).filhos(new ArrayList<Pessoa>()).genero(Genero.MASCULINO).id(1L).mae(null).nome(\"Pessoa 1\").salario(1000.0).build();".equals(printCreateObjectCode);
 	}
 	
