@@ -34,8 +34,8 @@ public class Pessoa {
 	
 	private Boolean ativo;
 	
-	
 	private Pessoa mae;
+	
 	private List<Pessoa>filhos;
 	
 }

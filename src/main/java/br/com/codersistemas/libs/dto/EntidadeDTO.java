@@ -1,7 +1,9 @@
 package br.com.codersistemas.libs.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import br.com.codersistemas.libs.utils.StringUtil;
 import lombok.Data;
 
 @Data 
@@ -26,5 +28,15 @@ public class EntidadeDTO {
 	@Override
 	public String toString() {
 		return super.toString();
+	}
+
+	public List<AtributoDTO> getAtributosFKs() {
+		return atributos.stream()
+		.filter(atributo -> atributo.isFk() && !atributo.isEnum() && !atributo.isCollection())
+		.collect(Collectors.toList());
+	}
+
+	public String getNomeHyphenCase() {
+		return StringUtil.toHiphenCase(nome);
 	}
 }

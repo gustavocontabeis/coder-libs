@@ -1,10 +1,12 @@
 /home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/mock/Genero.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/mock/Carro.java
-/home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/mock/Pessoa.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/mock/PessoaEntity.java
+/home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/mock/Pessoa.java
+/home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/MockUtilsTest.java
+/home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/mock/PessoaPrimitive.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/StringUtilTest.java
-/home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/mock/MeuEnum.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/mock/Tipos.java
+/home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/mock/MeuEnum.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/DateUtilsTest.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/ReflectionUtilsTest.java
 /home/gustavo/dev/workspace-coder/coder-libs/src/test/java/br/com/codersistemas/libs/utils/mock/Funcionario.java

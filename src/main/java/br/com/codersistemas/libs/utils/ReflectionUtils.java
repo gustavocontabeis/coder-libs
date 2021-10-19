@@ -19,8 +19,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -33,11 +35,11 @@ import br.com.codersistemas.libs.dto.AtributoDTO;
 import br.com.codersistemas.libs.dto.EntidadeDTO;
 import br.com.codersistemas.libs.dto.MudancaConteudoDTO;
 import br.com.codersistemas.libs.exceptions.ReflectionUtilsException;
+import br.com.codersistemas.libs.strategy.literalvalues.LiteralValueFactory;
 
 public class ReflectionUtils {
-
+	
 	private ReflectionUtils() {
-
 	}
 
 	public static void printGettersSetters(Class aClass) {
@@ -531,49 +533,7 @@ public class ReflectionUtils {
 	 */
 	public static Object getValorLiteral(Object obj, String atributo) {
 		Object valor = getValor(obj, atributo);
-
-		if (valor != null) {
-			if (valor instanceof String) {
-				return "\"" + valor + "\"";
-			}
-
-			if (valor instanceof Integer) {
-				return valor.toString();
-			}
-
-			if (valor instanceof Long) {
-				return valor.toString() + "L";
-			}
-
-			if (valor instanceof Float) {
-				return valor.toString() + "F";
-			}
-
-			if (valor instanceof Double) {
-				return valor.toString();
-			}
-
-			if (valor instanceof Date) {
-				return valor.toString();
-			}
-
-			if (valor instanceof Enum) {
-				return valor.getClass().getSimpleName() + "." + valor.toString();
-			}
-
-			if (valor instanceof Short) {
-				return "(short) " + valor.toString();
-			}
-
-			if (valor instanceof Boolean) {
-				return valor.toString();
-			}
-
-		} else {
-			return "null";
-		}
-
-		return null;
+		return LiteralValueFactory.create(valor);
 	}
 
 	/**

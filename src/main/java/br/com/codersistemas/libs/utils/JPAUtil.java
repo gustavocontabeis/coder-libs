@@ -19,7 +19,9 @@ import javax.persistence.JoinColumn;
 
 import org.apache.commons.lang3.StringUtils;
 
+import br.com.codersistemas.libs.dto.AtributoDTO;
 import br.com.codersistemas.libs.dto.ColumnDTO;
+import lombok.ToString;
 
 public class JPAUtil {
 
@@ -67,6 +69,8 @@ public class JPAUtil {
 		sb.append("import javax.validation.constraints.*;\n");
 		sb.append("\n");
 		sb.append("@Data\n");
+		sb.append(toString(classe));
+		
 		sb.append("@NoArgsConstructor\n");
 		sb.append("@AllArgsConstructor\n");
 		sb.append("@Builder\n");
@@ -75,6 +79,28 @@ public class JPAUtil {
 		sb.append("public class " + classe.getSimpleName() + " implements Serializable {\n");
 		sb.append("	\n");
 		sb.append("	private static final long serialVersionUID = 1L;");
+		return sb.toString();
+	}
+
+	private static String toString(Class classe) {
+		StringBuilder sb = new StringBuilder();
+		boolean test = false;
+		for(AtributoDTO a : ReflectionUtils.getAtributos(classe)) {
+			if(a.isFk()) {
+				test = true;
+				break;
+			}
+		}
+		if(test) {
+			sb.append("@ToString(exclude = {");
+			for(AtributoDTO a : ReflectionUtils.getAtributos(classe)) {
+				if(a.isFk()) {
+					sb.append(a.getNomeInstancia());
+				}
+			}
+			sb.append("})\n");
+		}
+		
 		return sb.toString();
 	}
 

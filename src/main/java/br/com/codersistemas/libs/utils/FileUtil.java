@@ -1,7 +1,9 @@
 package br.com.codersistemas.libs.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -50,5 +52,10 @@ public class FileUtil {
 		return resultStringBuilder.toString();
 	}
 
+	public static void write(File file, String print) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+		writer.write(print);
+		writer.close();
+	}
 
 }

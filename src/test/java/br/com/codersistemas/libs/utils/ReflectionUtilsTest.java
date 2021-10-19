@@ -22,6 +22,7 @@ import br.com.codersistemas.libs.utils.mock.Genero;
 import br.com.codersistemas.libs.utils.mock.MeuEnum;
 import br.com.codersistemas.libs.utils.mock.Pessoa;
 import br.com.codersistemas.libs.utils.mock.PessoaEntity;
+import br.com.codersistemas.libs.utils.mock.PessoaPrimitive;
 import br.com.codersistemas.libs.utils.mock.Tipos;
 
 public class ReflectionUtilsTest {
@@ -371,6 +372,8 @@ public class ReflectionUtilsTest {
 	public void testPrintCreateObjectCode() throws Exception {
 		Pessoa obj1 = Pessoa.builder().altura(1.7f).ativo(true).filhos(new ArrayList<Pessoa>()).genero(Genero.FEMININO).id(1L).mae(null).nome("Pessoa 1").salario(1000.0).build();
 		String printCreateObjectCode = ReflectionUtils.printCreateObjectCode(obj1);
+		PessoaPrimitive obj2 = PessoaPrimitive.builder().altura(1.7f).ativo(true).genero(Genero.FEMININO).id(1L).mae(null).nome("Pessoa 1").salario(1000.0).build();
+		ReflectionUtils.printCreateObjectCode(obj2);
 		"Pessoa obj1 = Pessoa.builder().altura(1.7f).ativo(true).filhos(new ArrayList<Pessoa>()).genero(Genero.MASCULINO).id(1L).mae(null).nome(\"Pessoa 1\").salario(1000.0).build();".equals(printCreateObjectCode);
 	}
 	

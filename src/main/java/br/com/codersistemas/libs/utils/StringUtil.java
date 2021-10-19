@@ -53,6 +53,10 @@ public class StringUtil extends StringUtils {
 		return string.replaceAll("([a-z])([A-Z]+)", "$1_$2").toLowerCase();
 	}
 
+	public static String toHiphenCase(String string) {
+		return toUnderlineCase(string).replaceAll("_", "-");
+	}
+
 	public static String caplitalizePlural(String name) {
 		name = capitalize(name);
 		name = plural(name);
@@ -63,6 +67,9 @@ public class StringUtil extends StringUtils {
 		if(!name.toLowerCase().endsWith("s")) {
 			if(name.endsWith("cao")) {
 				name = StringUtils.replace(name, "cao", "coes");
+			} else if(name.endsWith("r")) {
+				name += "res";
+				name = name.replace("rres", "res");
 			} else {
 				name = name + "s";
 			}			

@@ -102,4 +102,12 @@ public class StringUtilTest {
 		assertTrue("Coracoes".equals(StringUtil.caplitalizePlural("coracao")));
 	}
 	
+	@Test
+	public void testToHiphenCase() {
+		assertTrue("centro-de-custo".equals(StringUtil.toHiphenCase("CentroDeCusto")));
+		assertTrue("centro-de-custo".equals(StringUtil.toHiphenCase("Centro_De_Custo")));
+	}
+
+
+	
 }
