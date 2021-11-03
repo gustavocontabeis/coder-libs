@@ -2,10 +2,10 @@ package br.com.codersistemas.libs.utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import br.com.codersistemas.libs.dto.AtributoDTO;
 import br.com.codersistemas.libs.dto.ColumnDTO;
-import lombok.ToString;
 
 public class JPAUtil {
 
@@ -83,25 +82,7 @@ public class JPAUtil {
 	}
 
 	private static String toString(Class classe) {
-		StringBuilder sb = new StringBuilder();
-		boolean test = false;
-		for(AtributoDTO a : ReflectionUtils.getAtributos(classe)) {
-			if(a.isFk()) {
-				test = true;
-				break;
-			}
-		}
-		if(test) {
-			sb.append("@ToString(exclude = {");
-			for(AtributoDTO a : ReflectionUtils.getAtributos(classe)) {
-				if(a.isFk()) {
-					sb.append(a.getNomeInstancia());
-				}
-			}
-			sb.append("})\n");
-		}
-		
-		return sb.toString();
+		return new LombokToStringUtil(classe).print();
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -127,9 +108,12 @@ public class JPAUtil {
 
 				if(field.getType().isPrimitive())
 					throw new RuntimeException("Nao utilize tipos primitivos");
-
+				if(isBidirectionalRelationship(classe, field)) {
+					anotacoes += new JsonIgnorePropertiesUtil(classe, field).print();
+				}
+				anotacoes += new JsonIgnoreUtil(classe, field).print();
 				if (field.getType().isEnum()) {
-					anotacoes += "@NotNull(message = \""+label+" deve ser preenchido.\")\n";
+					anotacoes += "\t@NotNull(message = \""+label+" deve ser preenchido.\")\n";
 					anotacoes += "\t@Enumerated(EnumType.STRING)\n";
 					anotacoes += "\t@Column(length=255, nullable=false)";
 				} else if (field.getType() == Long.class) {
@@ -151,10 +135,10 @@ public class JPAUtil {
 					anotacoes += "\t@Temporal(TemporalType.TIMESTAMP) \n";
 					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
 				} else if (field.getType() == String.class) {
-					anotacoes += "@NotNull(message = \""+label+" deve ser preenchido.\")\n";
+					anotacoes += "@NotEmpty(message = \""+label+" deve ser preenchido.\")\n";
 					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
 				} else if (field.getType() == Integer.class) {
-					anotacoes += "@NotEmpty @Column(name=\""+label+"\", nullable=true)";
+					anotacoes += "@NotNull @Column(name=\""+label+"\", nullable=true)";
 				} else if (field.getType() == Float.class) {
 					anotacoes += "@NotNull(message = \""+label+" deve ser preenchido.\")";
 					anotacoes += "@Column(name=\""+nomeColuna+"\", precision=10, scale=2, nullable=false)";
@@ -192,6 +176,30 @@ public class JPAUtil {
 			}
 		}
 		return sb.toString();
+	}
+
+	private static boolean isBidirectionalRelationship(Class classe, Field field) {
+		boolean containsCircularReference = ReflectionUtils.containsCircularReference(classe, field);
+		return containsCircularReference;
+		/*
+		//System.out.println(classe.getName());
+		//System.out.println("  "+type.getName());
+		//System.out.println(">>>");
+		Field[] fields = ReflectionUtils.getFields(type);
+		for (Field field : fields) {
+			Type genericType = ReflectionUtils.getGenericType(field);
+			if(genericType != null) {
+				if(genericType.getTypeName().equals(classe.getName())) {
+					//System.out.println(">>>!!!");
+					return true;
+				}
+			}
+			if(field.getType().getName().equals(classe.getName())) {
+				return true;
+			}
+		}
+		return false;
+		*/
 	}
 
 	/**

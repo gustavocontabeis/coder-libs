@@ -1,5 +1,6 @@
 package br.com.codersistemas.libs.dto;
 
+import br.com.codersistemas.libs.utils.StringUtil;
 import lombok.Data;
 import lombok.ToString;
 
@@ -28,4 +29,7 @@ public class AtributoDTO {
 	private EntidadeDTO entidade;
 	private Class classe;
 	
+	public String getNomeHyphenCase() {
+		return StringUtil.toHiphenCase(nome);
+	}
 }

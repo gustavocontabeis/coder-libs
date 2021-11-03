@@ -106,7 +106,7 @@ public class ReflectionUtils {
 					list.add(field);
 			}
 			classe = classe.getSuperclass();
-		} while (classe != Object.class);
+		} while (classe != Object.class && classe != null);
 		return list.toArray(new Field[list.size()]);
 	}
 
@@ -986,6 +986,43 @@ public class ReflectionUtils {
 
 	private static boolean isFk(Class classe) {
 		return classe.getName().startsWith("java.");
+	}
+
+	public static boolean containsCircularReference(Class<?> classe, Field attribute) {
+		//System.out.println("containsCircularReference: classe: "+classe);
+		Class typeNormalOrGeneric = ReflectionUtils.getTypeNormalOrGeneric(attribute);
+		for (Field field : getFields(typeNormalOrGeneric)) {
+			//System.out.println("   "+field.getName()+" - "+ field.getType());
+			Class c = getTypeNormalOrGeneric(field);
+			//System.out.println("   "+c.getName());
+			if(c.getName().startsWith("java")) {
+				continue;
+			}
+			if(c.getName().equals(classe.getName())) {
+				return true;
+			}
+//			for (Field subField : getFields(c)) {
+//				System.out.println("      "+subField.getName()+" - "+ c);
+//				if(subField.getType().getName().equals(classe.getName())) {
+//					return true;
+//				}
+//			}
+		}
+		return false;
+	}
+
+	/**
+	 * Retorna o tipo normal ou Generico.
+	 * @param field
+	 * @return
+	 */
+	public static Class getTypeNormalOrGeneric(Field field) {
+		Class c = field.getType();
+		Type genericType = getGenericType(field);
+		if(genericType != null) {
+			c = (Class) genericType;
+		}
+		return c;
 	}
 
 }
