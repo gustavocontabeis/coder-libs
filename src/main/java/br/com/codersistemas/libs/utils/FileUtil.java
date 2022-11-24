@@ -3,12 +3,18 @@ package br.com.codersistemas.libs.utils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FileUtil {
 
@@ -16,6 +22,18 @@ public class FileUtil {
 		Properties properties = new Properties();
 		try {
 			InputStream is = FileUtil.class.getResourceAsStream(adress);
+			Reader reader = new InputStreamReader(is);
+			properties.load(reader);
+		} catch (IOException e) {
+			throw new RuntimeException("Falha ao carregar configurações." + e);
+		}
+		return properties;
+	}
+	
+	public static final Properties loadProperties(File file) {
+		Properties properties = new Properties();
+		try {
+			InputStream is = new FileInputStream(file);
 			Reader reader = new InputStreamReader(is);
 			properties.load(reader);
 		} catch (IOException e) {
@@ -56,6 +74,26 @@ public class FileUtil {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 		writer.write(print);
 		writer.close();
+	}
+
+	public static List<String> readToList(String fileName) throws IOException {
+		List<String> result;
+		try (Stream<String> lines = Files.lines(Paths.get(fileName))) {
+			result = lines.collect(Collectors.toList());
+		}
+		return result;
+	}
+
+	public static List<String> readToList(File file) throws IOException {
+		return readToList(file.getName());
+	}
+
+	public static String read(String fileName) throws IOException {
+		return new String(Files.readAllBytes(Paths.get(fileName)));
+	}
+	
+	public static String read(File file) throws IOException {
+		return read(file.getName());
 	}
 
 }

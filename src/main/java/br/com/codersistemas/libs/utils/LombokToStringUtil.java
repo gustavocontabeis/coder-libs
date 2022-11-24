@@ -29,7 +29,7 @@ public class LombokToStringUtil {
 	private String printValue() {
 		StringBuilder sb = new StringBuilder();
 		if(!list.isEmpty()) {
-			sb = new StringBuilder("@ToString({");
+			sb = new StringBuilder("@ToString(exclude = {");
 			StringBuilder sbItens = new StringBuilder(); 
 			for (String f : list) {
 				sbItens.append("\"" + f + "\"" + DIV);

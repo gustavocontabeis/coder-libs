@@ -1,4 +1,4 @@
-package br.com.codersistemas.libs.utils;
+package br.com.codersistemas.libs.utils.mock;
 
 import lombok.Data;
 

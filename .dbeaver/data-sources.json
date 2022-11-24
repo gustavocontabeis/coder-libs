@@ -1,0 +1,161 @@
+{
+	"folders": {},
+	"connections": {
+		"postgres-jdbc-170224bb254-2254e53f72ceb45a": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "bd_coder_gem_api",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "localhost",
+				"port": "5432",
+				"database": "bd_coder_gem_api",
+				"url": "jdbc:postgresql://localhost:5432/bd_coder_gem_api",
+				"type": "dev",
+				"provider-properties": {
+					"@dbeaver-show-non-default-db@": "false",
+					"@dbeaver-show-template-db@": "false"
+				}
+			}
+		},
+		"postgres-jdbc-170fee00d2d-142439c39e63032d": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "bd_catalogo_musical_api",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "localhost",
+				"port": "5432",
+				"database": "bd_catalogo_musical_api",
+				"url": "jdbc:postgresql://localhost:5432/bd_catalogo_musical_api",
+				"type": "dev",
+				"provider-properties": {
+					"@dbeaver-show-non-default-db@": "false",
+					"@dbeaver-show-template-db@": "false"
+				}
+			}
+		},
+		"postgres-jdbc-17184382550-1f1cb8e77b6b098b": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "codersistemas.com.br - Postgres",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "codersistemas.com.br",
+				"port": "5432",
+				"database": "postgres",
+				"url": "jdbc:postgresql://codersistemas.com.br:5432/postgres",
+				"type": "dev",
+				"properties": {
+					"connectTimeout": "20",
+					"loginTimeout": "20"
+				},
+				"provider-properties": {
+					"@dbeaver-show-non-default-db@": "true",
+					"@dbeaver-show-template-db@": "false"
+				},
+				"handlers": {
+					"ssh_tunnel": {
+						"type": "TUNNEL",
+						"enabled": true,
+						"save-password": true,
+						"properties": {
+							"sshConnectTimeout": "10000",
+							"port": "22",
+							"keyPath": "/home/gustavo/.ssh/id_rsa",
+							"implementation": "jsch",
+							"host": "codersistemas.com.br",
+							"authType": "PUBLIC_KEY"
+						}
+					}
+				}
+			}
+		},
+		"postgres-jdbc-172d6d50700-7df0d4ac8dda128f": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "PostgreSQL - docker - 0.0.0.0",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "0.0.0.0",
+				"port": "5432",
+				"database": "postgres",
+				"url": "jdbc:postgresql://0.0.0.0:5432/postgres",
+				"type": "dev",
+				"provider-properties": {
+					"@dbeaver-show-non-default-db@": "false",
+					"@dbeaver-show-template-db@": "false"
+				}
+			}
+		},
+		"postgres-jdbc-17311ea8b3f-6f288975fcef1b1f": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "PostgreSQL - docker - IP",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "172.18.0.2",
+				"port": "5432",
+				"database": "postgres",
+				"url": "jdbc:postgresql://172.18.0.2:5432/postgres",
+				"type": "dev",
+				"provider-properties": {
+					"@dbeaver-show-non-default-db@": "false",
+					"@dbeaver-show-template-db@": "false"
+				}
+			}
+		},
+		"postgres-jdbc-1733589a231-46573c4dff71c274": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "coder-blog-bd-usr",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "0.0.0.0",
+				"port": "5432",
+				"database": "coder-blog-bd",
+				"url": "jdbc:postgresql://0.0.0.0:5432/coder-blog-bd",
+				"type": "dev",
+				"provider-properties": {
+					"@dbeaver-show-non-default-db@": "false",
+					"@dbeaver-show-template-db@": "false"
+				}
+			}
+		},
+		"postgres-jdbc-173cbc49da8-4aa5119ddd25bdee": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "PostgreSQL - postgres",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "localhost",
+				"port": "5432",
+				"database": "postgres",
+				"url": "jdbc:postgresql://localhost:5432/postgres",
+				"type": "dev",
+				"provider-properties": {
+					"@dbeaver-show-non-default-db@": "false",
+					"@dbeaver-show-template-db@": "false"
+				}
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"auto-close-transactions": false
+		}
+	}
+}

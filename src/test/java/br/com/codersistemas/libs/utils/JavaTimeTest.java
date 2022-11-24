@@ -1,9 +1,11 @@
 package br.com.codersistemas.libs.utils;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -42,6 +44,28 @@ public class JavaTimeTest {
 		ZonedDateTime dataHoraZonaAgora = ZonedDateTime.now();
 		ZonedDateTime dataHoraZonaEspecifica = ZonedDateTime.of(dataHoraEspecifica, ZoneId.of("America/Sao_Paulo"));
 		ZonedDateTime dataHoraZonaEspecificaDoTexto = ZonedDateTime.parse("2017-12-25T20:30:50-02:00[America/Sao_Paulo]");
+		
+		//Period é a representação entre duas datas
+		LocalDate startDate = LocalDate.of(2015, 2, 20);
+		LocalDate endDate = LocalDate.of(2017, 1, 15);
+		Period period = Period.between(startDate, endDate);
+		
+		System.out.println("Years:" + period.getYears() + " months:" + period.getMonths() + " days:"+period.getDays());
+		
+		int years = 3;
+		int months = 10;
+		int days = 2;
+		Period fromUnits = Period.of(years, months, days);
+		Period fromDays = Period.ofDays(50);
+		Period fromMonths = Period.ofMonths(5);
+		Period fromYears = Period.ofYears(months);
+		Period fromWeeks = Period.ofWeeks(40);
+		
+		Duration.ofHours(8).toMillis();
+
+		//assertEquals(280, fromWeeks.getDays());
+		
+		
 
 	}
 

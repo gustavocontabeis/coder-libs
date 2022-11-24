@@ -62,14 +62,37 @@ public class JPAUtil {
 		sb.append(classe.getPackage() + ";\n");
 		sb.append("\n");
 		sb.append("import java.io.Serializable;\n");
-		sb.append("import java.util.*;\n");
-		sb.append("import lombok.*;\n");
-		sb.append("import javax.persistence.*;\n");
+		sb.append("import java.time.LocalDate;\n");
+		sb.append("\n");
+		sb.append("import javax.persistence.Column;\n");
+		sb.append("import javax.persistence.Entity;\n");
+		sb.append("import javax.persistence.EnumType;\n");
+		sb.append("import javax.persistence.Enumerated;\n");
+		sb.append("import javax.persistence.GeneratedValue;\n");
+		sb.append("import javax.persistence.GenerationType;\n");
+		sb.append("import javax.persistence.Id;\n");
+		sb.append("import javax.persistence.JoinColumn;\n");
+		sb.append("import javax.persistence.ManyToOne;\n");
+		sb.append("import javax.persistence.SequenceGenerator;\n");
+		sb.append("import javax.persistence.Table;\n");
+		sb.append("import javax.persistence.Temporal;\n");
+		sb.append("import javax.persistence.TemporalType;\n");
+		sb.append("import javax.validation.constraints.NotEmpty;\n");
+		sb.append("import javax.validation.constraints.NotNull;\n");
+		sb.append("\n");
+		sb.append("import com.fasterxml.jackson.annotation.JsonFormat;\n");
+		sb.append("import com.fasterxml.jackson.annotation.JsonIgnore;\n");
+		sb.append("import com.fasterxml.jackson.annotation.JsonIgnoreProperties;\n");
+		sb.append("\n");
+		sb.append("import br.com.codersistemas.gem.gemdados.Genero;\n");
+		sb.append("import lombok.AllArgsConstructor;\n");
+		sb.append("import lombok.Builder;\n");
+		sb.append("import lombok.Data;\n");
+		sb.append("import lombok.NoArgsConstructor;\n");
 		sb.append("import javax.validation.constraints.*;\n");
 		sb.append("\n");
 		sb.append("@Data\n");
 		sb.append(toString(classe));
-		
 		sb.append("@NoArgsConstructor\n");
 		sb.append("@AllArgsConstructor\n");
 		sb.append("@Builder\n");
@@ -124,15 +147,18 @@ public class JPAUtil {
 					} else {
 						anotacoes += "@Column(name=\""+nomeColuna+"\", nullable=false)";
 					}
-				} else if (field.getType() == Date.class || field.getType() == LocalDate.class) {
+				} else if (field.getType() == Date.class) {
 					anotacoes += "\n@NotNull(message = \""+label+" deve ser preenchido.\")\n ";
 					anotacoes += "\t@JsonFormat(pattern=\"dd/MM/yyyy\")\n";
 					anotacoes += "\t@Temporal(TemporalType.DATE) \n";
 					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
+				} else if (field.getType() == LocalDate.class) {
+					anotacoes += "\n@NotNull(message = \""+label+" deve ser preenchido.\")\n ";
+					anotacoes += "\t@JsonFormat(pattern=\"dd/MM/yyyy\")\n";
+					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
 				} else if (field.getType() == LocalDateTime.class) {
 					anotacoes += "\t@NotNull(message = \""+label+" deve ser preenchido.\")";
 					anotacoes += "\t@JsonFormat(pattern=\"dd/MM/yyyy HH:mm\")\n";
-					anotacoes += "\t@Temporal(TemporalType.TIMESTAMP) \n";
 					anotacoes += "\t@Column(name=\""+nomeColuna+"\", length=255, nullable=false)";
 				} else if (field.getType() == String.class) {
 					anotacoes += "@NotEmpty(message = \""+label+" deve ser preenchido.\")\n";
@@ -166,7 +192,7 @@ public class JPAUtil {
 					if(isEntity){
 						Field id = getId(field);
 						String fk_name = classe.getSimpleName()+"_"+field.getType().getSimpleName()+"_fk";
-						anotacoes += "@ManyToOne @JoinColumn(name=\""+ JPAUtil.gerarColunaId(field.getType())+"\", nullable=false) @ForeignKey(name=\""+fk_name+"\")";
+						anotacoes += "@ManyToOne @JoinColumn(name=\""+ JPAUtil.gerarColunaId(field.getType())+"\", nullable=false) //@ForeignKey(name=\""+fk_name+"\")";
 					}
 				} else {
 					throw new RuntimeException("Erro ao gerar atributo de " + field.getType().getName());

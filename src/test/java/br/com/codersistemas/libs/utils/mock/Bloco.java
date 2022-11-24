@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import br.com.codersistemas.libs.utils.Apartamento;
 import lombok.Data;
 
 @Data
